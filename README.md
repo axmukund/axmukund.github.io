@@ -19,6 +19,57 @@
 - Block quotes: standard Markdown `>`; include attribution where relevant.
 - LaTeX: inline `$...$` and block `$$...$$`.
 
+## Writing a new blog post
+
+1. Create a new folder at `src/blog/YYYY/MM/DD/your-slug/`.
+2. Add `index.md` inside that folder.
+3. Add an `assets/` folder for post-local images/files.
+4. Use front matter in `index.md`:
+
+	```
+	---
+	layout: layouts/base.njk
+	tags:
+	  - blog
+	title: Your Post Title
+	description: One-line summary
+	---
+	```
+
+5. Write content in Markdown:
+	- Image: `![Alt text](./assets/figure.svg)`
+	- Code block: fenced triple backticks with language label
+	- Block quote: `> quote`
+	- LaTeX: inline `$...$`, display `$$...$$`
+	- Embed: raw HTML (for example iframe) is supported
+
+6. Preview and publish:
+	- Preview: `npm run dev`
+	- Build check: `npm run build`
+	- Publish: `git add . && git commit -m "Add new post" && git push origin main`
+
+## Adding a recommendation
+
+1. Create a markdown file in `src/recs/` (for example `src/recs/2026-03-13-my-rec.md`).
+2. Use front matter like:
+
+	```
+	---
+	layout: layouts/base.njk
+	tags:
+	  - recs
+	title: Recommendation title
+	url: https://example.com
+	---
+	```
+
+3. Add a short note in the body explaining why you recommend it.
+4. Recommendations on `/recs/` are sorted in reverse chronological order (newest first).
+5. Preview and publish:
+	- Preview: `npm run dev`
+	- Build check: `npm run build`
+	- Publish: `git add . && git commit -m "Add recommendation" && git push origin main`
+
 ## Accessibility defaults
 
 - Semantic landmarks (`header`, `nav`, `main`).
