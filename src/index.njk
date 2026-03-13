@@ -1,0 +1,17 @@
+---
+layout: layouts/base.njk
+title: Home
+description: Useful links
+permalink: /
+---
+<h1>Links</h1>
+<ul class="icon-grid">
+  {% for item in links %}
+  <li>
+    <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.label }}">
+      <img src="{{ item.icon }}" alt="" aria-hidden="true" />
+      <span>{{ item.label }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>

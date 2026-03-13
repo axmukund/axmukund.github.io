@@ -1,0 +1,36 @@
+---
+layout: layouts/base.njk
+title: Utility
+permalink: /utility/
+description: Typography and layout debug helpers.
+---
+<h1>Typography Utility</h1>
+<p>Use this page to quickly test reading width, heading rhythm, contrast, spacing, and code/math rendering while tuning the design.</p>
+
+<h2>Reading Measure</h2>
+<p class="measure-sample">This sample paragraph is intentionally medium-length to help evaluate line length. If this line feels hard to track or too cramped, adjust max width or type size. If it feels too sparse, reduce measure or tighten spacing.</p>
+
+<h2>Type Scale</h2>
+<div class="type-scale" role="list" aria-label="Type scale samples">
+  <p role="listitem" class="scale-1">Scale 1 — Primary page heading sample</p>
+  <p role="listitem" class="scale-2">Scale 2 — Section heading sample</p>
+  <p role="listitem" class="scale-3">Scale 3 — Subheading sample</p>
+  <p role="listitem" class="scale-body">Body copy — The quick brown fox jumps over the lazy dog.</p>
+  <p role="listitem" class="scale-small">Small text — Metadata, captions, and supporting copy.</p>
+</div>
+
+<h2>Ruler</h2>
+<div class="ruler" aria-hidden="true">
+  <span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span><span>70</span><span>80</span>
+</div>
+
+<h2>Code & Math Check</h2>
+<pre><code class="language-js">const idealMeasure = 66;
+const currentMeasure = 72;
+console.log(currentMeasure <= idealMeasure ? "Comfortable" : "Too long");</code></pre>
+
+<p>Inline equation test: $\sigma^2 = \mathbb{E}[(X-\mu)^2]$</p>
+
+$$
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+$$
