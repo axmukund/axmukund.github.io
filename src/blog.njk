@@ -2,14 +2,15 @@
 layout: layouts/base.njk
 title: Blog
 permalink: /blog/
-pagination:
-  data: collections.blog
-  size: 999
-  alias: posts
 ---
 <h1>Blog</h1>
+{% set posts = collections.blog | reverse %}
+{% if posts and posts.length %}
 <ul>
-  {% for post in posts | reverse %}
+  {% for post in posts %}
   <li><a href="{{ post.url }}">{{ post.data.title }}</a> — {{ post.date | readableDate }}</li>
   {% endfor %}
 </ul>
+{% else %}
+<p>No posts yet.</p>
+{% endif %}
