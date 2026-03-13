@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% if title %}{{ title }} · {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ description or site.description }}" />
+    <script>
+      (function () {
+        var storageKey = "theme-preference";
+        var hour = new Date().getHours();
+        var isNight = hour >= 19 || hour < 7;
+        var storedTheme = null;
+
+        try {
+          storedTheme = localStorage.getItem(storageKey);
+        } catch (error) {
+          storedTheme = null;
+        }
+
+        var theme = storedTheme === "dark" || storedTheme === "light"
+          ? storedTheme
+          : (isNight ? "dark" : "light");
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <link rel="stylesheet" href="/assets/styles/main.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
   </head>
@@ -15,8 +36,42 @@
         {% for item in nav %}
           <a {% if page.url == item.url %}aria-current="page"{% endif %} href="{{ item.url }}">{{ item.label }}</a>
         {% endfor %}
+        <button class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+          Dark mode
+        </button>
       </nav>
     </header>
     <main id="content" class="content">{{ content | safe }}</main>
+    <script>
+      (function () {
+        var storageKey = "theme-preference";
+        var root = document.documentElement;
+        var button = document.querySelector(".theme-toggle");
+
+        if (!button) {
+          return;
+        }
+
+        function applyTheme(theme) {
+          var isDark = theme === "dark";
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+          button.setAttribute("aria-pressed", String(isDark));
+          button.textContent = isDark ? "Light mode" : "Dark mode";
+        }
+
+        applyTheme(root.dataset.theme || "light");
+
+        button.addEventListener("click", function () {
+          var nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+          applyTheme(nextTheme);
+
+          try {
+            localStorage.setItem(storageKey, nextTheme);
+          } catch (error) {
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

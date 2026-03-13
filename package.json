@@ -1,8 +1,8 @@
 {
-  "name": "axm-blog",
+  "name": "axm-posts",
   "version": "1.0.0",
   "private": true,
-  "description": "Personal website with blog, recommendations, and useful links",
+  "description": "Personal website with posts, recommendations, and useful links",
   "scripts": {
     "dev": "eleventy --serve",
     "build": "eleventy",

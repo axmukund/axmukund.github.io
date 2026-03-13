@@ -4,7 +4,27 @@
   --muted: #56534d;
   --link: #1f3ea3;
   --focus: #ffb400;
+  --surface: #ffffff;
+  --surface-alt: #f3f0e9;
+  --border: #d7d1c4;
+  --border-strong: #beb6a8;
+  --quote-border: #8d887f;
   --measure: 46rem;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --bg: #16181c;
+  --fg: #ece7dc;
+  --muted: #b8b0a3;
+  --link: #9bb8ff;
+  --focus: #ffd166;
+  --surface: #20242b;
+  --surface-alt: #252a32;
+  --border: #3d434d;
+  --border-strong: #555d69;
+  --quote-border: #6d7684;
+  color-scheme: dark;
 }
 
 * {
@@ -36,8 +56,8 @@ body {
   left: 1rem;
   top: 1rem;
   z-index: 1000;
-  background: #fff;
-  color: #000;
+  background: var(--surface);
+  color: var(--fg);
   padding: 0.5rem 0.75rem;
   outline: 3px solid var(--focus);
 }
@@ -52,10 +72,32 @@ body {
 .site-nav {
   display: flex;
   gap: 1rem;
+  align-items: center;
   flex-wrap: wrap;
   font-family: "Iowan Old Style", "Baskerville", "Times New Roman", Georgia, Cambria, serif;
   font-size: 0.9rem;
   letter-spacing: 0.01em;
+}
+
+.theme-toggle {
+  margin-left: auto;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--border-strong);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 a {
@@ -106,11 +148,10 @@ figure {
 }
 
 blockquote {
-  border-left: 3px solid #8d887f;
+  border-left: 3px solid var(--quote-border);
   padding-left: 1.25rem;
   margin-left: 0;
   color: var(--muted);
-  font-style: italic;
 }
 
 pre,
@@ -121,7 +162,7 @@ code {
 pre {
   overflow-x: auto;
   padding: 1rem;
-  background: #f3f0e9;
+  background: var(--surface-alt);
   border-radius: 0.2rem;
   line-height: 1.55;
 }
@@ -145,7 +186,7 @@ figure {
 
 figcaption {
   color: var(--muted);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, Cambria, serif;
   font-size: 0.88rem;
   line-height: 1.45;
 }
@@ -167,12 +208,12 @@ li + li {
   display: grid;
   place-items: center;
   gap: 0.6rem;
-  border: 1px solid #d7d1c4;
+  border: 1px solid var(--border);
   text-decoration: none;
   padding: 1rem 0.8rem;
   min-height: 120px;
   color: inherit;
-  background: #fff;
+  background: var(--surface);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
   font-size: 0.9rem;
 }
@@ -183,7 +224,7 @@ li + li {
 }
 
 .icon-grid a:hover {
-  border-color: #beb6a8;
+  border-color: var(--border-strong);
 }
 
 .measure-sample {
@@ -191,8 +232,8 @@ li + li {
 }
 
 .type-scale {
-  border: 1px solid #d7d1c4;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--surface);
   padding: 1rem;
 }
 
@@ -227,8 +268,8 @@ li + li {
 .ruler {
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
-  border: 1px solid #d7d1c4;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--surface);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.8rem;
 }
@@ -236,7 +277,7 @@ li + li {
 .ruler span {
   text-align: center;
   padding: 0.35rem 0;
-  border-left: 1px solid #e6e0d2;
+  border-left: 1px solid var(--border);
 }
 
 .ruler span:first-child {
@@ -251,5 +292,9 @@ li + li {
   .site-header,
   .content {
     padding: 1rem 0.85rem;
+  }
+
+  .theme-toggle {
+    margin-left: 0;
   }
 }

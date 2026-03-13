@@ -8,7 +8,7 @@
 
 ## Content model
 
-- Blog posts are self-contained folders under `src/blog`.
+- Posts are self-contained folders under `src/posts`.
 - Each post folder includes `index.md` and an `assets/` directory.
 - Use relative links for media, e.g. `![Alt text](./assets/image.webp)`.
 
@@ -19,9 +19,9 @@
 - Block quotes: standard Markdown `>`; include attribution where relevant.
 - LaTeX: inline `$...$` and block `$$...$$`.
 
-## Writing a new blog post
+## Writing a new post
 
-1. Create a new folder at `src/blog/YYYY/MM/DD/your-slug/`.
+1. Create a new folder at `src/posts/YYYY/MM/DD/your-slug/`.
 2. Add `index.md` inside that folder.
 3. Add an `assets/` folder for post-local images/files.
 4. Use front matter in `index.md`:
@@ -30,7 +30,7 @@
 	---
 	layout: layouts/base.njk
 	tags:
-	  - blog
+	  - posts
 	title: Your Post Title
 	description: One-line summary
 	---

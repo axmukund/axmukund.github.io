@@ -17,7 +17,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
-  eleventyConfig.addPassthroughCopy("src/blog/**/assets/**/*");
+  eleventyConfig.addPassthroughCopy("src/posts/**/assets/**/*");
 
   eleventyConfig.addFilter("datePath", datePath);
   eleventyConfig.addFilter("readableDate", (value) =>
