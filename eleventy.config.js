@@ -17,6 +17,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  eleventyConfig.addPassthroughCopy("src/blog/**/assets/**/*");
 
   eleventyConfig.addFilter("datePath", datePath);
   eleventyConfig.addFilter("readableDate", (value) =>
@@ -29,7 +30,7 @@ module.exports = function (eleventyConfig) {
   );
 
   const md = markdownIt({
-    html: false,
+    html: true,
     breaks: false,
     linkify: true,
     typographer: true,

@@ -3,7 +3,6 @@ layout: layouts/base.njk
 tags:
   - blog
 title: Welcome
-permalink: /blog/{{ page.date | datePath }}/welcome/
 description: First post
 ---
 This is a sample post folder.

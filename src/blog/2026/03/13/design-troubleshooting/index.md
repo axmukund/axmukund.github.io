@@ -3,7 +3,6 @@ layout: layouts/base.njk
 tags:
   - blog
 title: Design Troubleshooting Post
-permalink: /blog/{{ page.date | datePath }}/design-troubleshooting/
 description: A diagnostic post that verifies images, code blocks, quotes, and LaTeX rendering.
 ---
 This post is a single diagnostic page for checking **readability** and feature support. It intentionally includes long paragraphs, media, code, quotations, and equations.
@@ -62,9 +61,22 @@ $$
 \operatorname*{arg\,min}_{\theta} \sum_{i=1}^{n} \left(y_i - f_\theta(x_i)\right)^2
 $$
 
+## Embed rendering
+
+The iframe below is a rendering test for embedded media behavior and responsive scaling:
+
+<iframe
+  src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+  title="Embedded video rendering test"
+  loading="lazy"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen
+></iframe>
+
 ## Final checklist
 
 - Images render from local post assets.
 - Code blocks preserve formatting and horizontal scroll behavior.
 - Block quotes are visually distinct and readable.
 - Inline and display LaTeX are rendered correctly.
+- Iframe embeds render and remain responsive.
