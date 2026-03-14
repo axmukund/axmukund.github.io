@@ -77,12 +77,41 @@
       (function () {
         var content = document.querySelector(".content");
         if (!content) return;
+
+        var h1 = content.querySelector("h1");
+        var toc = content.querySelector(".toc");
+        if (h1 && toc && toc.parentNode === content) {
+          var shell = document.createElement("div");
+          shell.className = "post-shell";
+          var main = document.createElement("div");
+          main.className = "post-main";
+          var aside = document.createElement("aside");
+          aside.className = "post-toc";
+          aside.appendChild(toc);
+          shell.appendChild(aside);
+          shell.appendChild(main);
+
+          content.insertBefore(shell, h1);
+          main.appendChild(h1);
+
+          var next = shell.nextSibling;
+          while (next) {
+            var move = next;
+            next = next.nextSibling;
+            main.appendChild(move);
+          }
+
+          content.classList.add("has-side-toc");
+        }
+
         var h2s = Array.from(content.querySelectorAll("h2"));
         if (!h2s.length) return;
 
         h2s.forEach(function (h2) {
+          if (h2.closest("summary")) return;
           var details = document.createElement("details");
           details.className = "collapsible-section";
+          details.open = true;
           var summary = document.createElement("summary");
           h2.parentNode.insertBefore(details, h2);
           summary.appendChild(h2);
