@@ -23,6 +23,7 @@ Ultimately the answer to this seems to lie in the fact that the relationship bet
 Suppose we cut out someone's aortic valve, so there's no resistance to LV contraction at the outflow tract. In this case, the pressure-radius-flow dynamics are generally modeled/explained in various physiology textbooks and so on with the Hagen-Poiseuille equation, which is most famous for simultaneously terrorizing a) the non-French with regards to its spelling, b) the French with regards to it being persistently misspelled, and c) medical students in that it is an equation with math and exponents. 
 
 Normally, this equation is brought up to make the point that, for a fixed rate $Q$ of volumetric flow, through a tube with radius $R$ and length $L$, making the radius narrower increases the pressure $P$ required to maintain that flow with an exponent of 4. That probably didn't make sense, but whatever, here's your equation:
+
 $$\Delta P = \frac{8 \mu L Q}{\pi R^4}$$
 
 But, what is _also_ demonstrated in this equation is that for a fixed radius, there is a linear relationship between pressure and flow -- doubling the pressure would (roughly, within a scalar constant, big theta notation be damned) double your flow. 
@@ -38,12 +39,12 @@ Disclaimer: I have always been bad at physics.
 Suppose we have a Newtonian fluid with density $\rho$ and viscosity $\mu$ flowing through a long smooth cylindrical pipe with length $L$ and radius $R$. In this scenario, the pressure gradient throughout the section of pipe we've decided to care about will be constant. We assume the flow is symmetric about the axis of the pipe, with no radial component (no twisting, turbulence, or other shenanigans that might corrupt the youth). 
 
 We can describe the flow velocity vector $\vec{u}$ in cylindrical coordinates $(r, \theta, z)$ with time component $t$: 
-$$\vec{u}(r, \theta, z, t) = u_r(r, \theta\, z, t) \cdot e_r + u_\theta(r, \theta, z, t) \cdot e_\theta + u_z(r, \theta, z, t) \cdot e_z$$
+$$\vec{u}(r, \theta, z, t) = u_r(r, \theta, z, t) \cdot e_r + u_\theta(r, \theta, z, t) \cdot e_\theta + u_z(r, \theta, z, t) \cdot e_z$$
 where we have basis vectors $e_r, e_\theta, e_z$ and the various components of $\vec{u}$. 
 
 We assume, thanks to the afore-referenced spherical cows, that:
 1. $\partial (\_\_\_) / \partial t = 0$ (fully developed flow)
-2. $\mu_r = \mu_\theta = 0$ (no radial or axial movement)
+2. $u_r = u_\theta = 0$ (no radial or axial movement)
 
 [Individuals much smarter than me](https://demichie.github.io/NS_cylindrical/) have demonstrated that, under these conditions, the full Navier-Stokes equations reduce to
 
@@ -107,7 +108,7 @@ The energy cost here appears to be not so much managing the viscosity-induced fr
 $$\Delta P = \frac{1}{2} \rho v^2$$
 where $\rho$ is the density of the fluid and $v$ is the velocity of the fluid. For a pipe with cross-sectional area $A = \pi R^2$, we have $v = Q/A = Q/(\pi R^2)$, giving us
 $$\Delta P = \frac{1}{2} \rho \frac{Q^2}{\pi^2 R^4} $$
-and if you squint at this with some intensity, you'll note that instead of $\Delta P$ being linearly varying with $Q$, it's now quadratic in Q, so to double $Q$ you need **4** times the amount of pressure. A
+and if you squint at this with some intensity, you'll note that instead of $\Delta P$ being linearly varying with $Q$, it's now quadratic in Q, so to double $Q$ you need **4** times the amount of pressure.
 
 ## Various abuses of notation
 
