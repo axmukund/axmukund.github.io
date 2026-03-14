@@ -73,5 +73,48 @@
         });
       })();
     </script>
+    <script>
+      (function () {
+        var content = document.querySelector(".content");
+        if (!content) return;
+        var h2s = Array.from(content.querySelectorAll("h2"));
+        if (!h2s.length) return;
+
+        h2s.forEach(function (h2) {
+          var details = document.createElement("details");
+          details.className = "collapsible-section";
+          var summary = document.createElement("summary");
+          h2.parentNode.insertBefore(details, h2);
+          summary.appendChild(h2);
+          details.appendChild(summary);
+          var next = details.nextSibling;
+          while (next) {
+            var tag = next.tagName;
+            if (tag === "H1" || tag === "H2") break;
+            var move = next;
+            next = next.nextSibling;
+            details.appendChild(move);
+          }
+        });
+
+        function openFromHash() {
+          var hash = window.location.hash;
+          if (!hash) return;
+          try {
+            var target = document.querySelector(hash);
+            if (!target) return;
+            var el = target;
+            while (el && el !== content) {
+              if (el.tagName === "DETAILS") el.open = true;
+              el = el.parentElement;
+            }
+            setTimeout(function () { target.scrollIntoView(); }, 0);
+          } catch (e) {}
+        }
+
+        openFromHash();
+        window.addEventListener("hashchange", openFromHash);
+      })();
+    </script>
   </body>
 </html>

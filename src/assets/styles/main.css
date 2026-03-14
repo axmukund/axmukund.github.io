@@ -298,3 +298,85 @@ li + li {
     margin-left: 0;
   }
 }
+
+/* Table of contents */
+.toc {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1.2rem 0.85rem 1.1rem;
+  margin: 1.8rem 0 2rem;
+  font-size: 0.91rem;
+  line-height: 1.55;
+}
+
+.toc::before {
+  content: 'Contents';
+  display: block;
+  font-family: "Iowan Old Style", "Baskerville", "Times New Roman", Georgia, Cambria, serif;
+  font-weight: 600;
+  font-size: 1em;
+  margin-bottom: 0.45em;
+}
+
+.toc ol,
+.toc ul {
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.toc li {
+  margin: 0.25em 0;
+}
+
+.toc a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.toc a:hover {
+  color: var(--link);
+  text-decoration: underline;
+}
+
+/* Collapsible sections */
+details.collapsible-section {
+  margin: 2em 0;
+}
+
+details.collapsible-section > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  border-top: 1px solid var(--border);
+  padding-top: 0.25em;
+}
+
+details.collapsible-section > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.collapsible-section > summary::before {
+  content: '▶';
+  font-size: 0.6em;
+  display: inline-block;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+  color: var(--muted);
+  position: relative;
+  top: -0.1em;
+}
+
+details.collapsible-section[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+details.collapsible-section > summary h2 {
+  margin-top: 0.52em;
+}
+
+details.collapsible-section > summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

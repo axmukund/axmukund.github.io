@@ -1,5 +1,6 @@
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const markdownIt = require("markdown-it");
+const markdownItAnchor = require("markdown-it-anchor");
 const markdownItAttrs = require("markdown-it-attrs");
 const markdownItFootnote = require("markdown-it-footnote");
 const markdownItTexmath = require("markdown-it-texmath");
@@ -29,12 +30,38 @@ module.exports = function (eleventyConfig) {
     }).format(new Date(value))
   );
 
+  eleventyConfig.addTransform("toc", function (content, outputPath) {
+    if (!outputPath || !outputPath.endsWith(".html")) return content;
+    const headingRe = /<h2[^>]*\sid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/g;
+    const headings = [...content.matchAll(headingRe)];
+    if (headings.length < 2) return content;
+    const items = headings
+      .map(([, id, inner]) => {
+        const text = inner.replace(/<[^>]+>/g, "").trim();
+        return `<li><a href="#${id}">${text}</a></li>`;
+      })
+      .join("");
+    const toc = `<nav class="toc" aria-label="Table of contents"><ol>${items}</ol></nav>`;
+    return content.replace("</h1>", `</h1>${toc}`);
+  });
+
   const md = markdownIt({
     html: true,
     breaks: false,
     linkify: true,
     typographer: true,
   })
+    .use(markdownItAnchor, {
+      slugify: (s) =>
+        s
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[''""]/g, "")
+          .replace(/[^\w\s-]/g, "")
+          .trim()
+          .replace(/\s+/g, "-")
+          .toLowerCase(),
+    })
     .use(markdownItAttrs)
     .use(markdownItFootnote)
     .use(markdownItTexmath, {
