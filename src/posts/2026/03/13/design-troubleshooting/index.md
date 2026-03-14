@@ -1,7 +1,5 @@
 ---
 layout: layouts/base.njk
-tags:
-  - posts
 title: Design Troubleshooting
 description: A simple rendering check for images, code blocks, quotes, embeds, and LaTeX.
 ---
