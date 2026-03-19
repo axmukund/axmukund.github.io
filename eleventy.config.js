@@ -73,7 +73,91 @@ module.exports = function (eleventyConfig) {
       },
     });
 
+  // Support Pandoc-style inline footnotes: ^{...}
+  // These are rendered as Tufte-style margin notes.
+  md.inline.ruler.before("footnote_inline", "footnote_inline_curly", function (state, silent) {
+    const max = state.posMax;
+    const start = state.pos;
+
+    // Expect ^{
+    if (start + 2 >= max) return false;
+    if (state.src.charCodeAt(start) !== 0x5E /* ^ */) return false;
+    if (state.src.charCodeAt(start + 1) !== 0x7B /* { */) return false;
+
+    let pos = start + 2;
+    let level = 1;
+
+    while (pos < max) {
+      const ch = state.src.charCodeAt(pos);
+      if (ch === 0x7B /* { */) {
+        level++;
+      } else if (ch === 0x7D /* } */) {
+        level--;
+        if (level === 0) break;
+      }
+      pos++;
+    }
+
+    if (level !== 0) return false;
+
+    if (!silent) {
+      const labelStart = start + 2;
+      const labelEnd = pos;
+
+      if (!state.env.footnotes) state.env.footnotes = {};
+      if (!state.env.footnotes.list) state.env.footnotes.list = [];
+
+      const footnoteId = state.env.footnotes.list.length;
+      const tokens = [];
+
+      state.md.inline.parse(state.src.slice(labelStart, labelEnd), state.md, state.env, tokens);
+
+      const token = state.push("footnote_ref", "", 0);
+      token.meta = { id: footnoteId };
+
+      state.env.footnotes.list[footnoteId] = {
+        content: state.src.slice(labelStart, labelEnd),
+        tokens,
+      };
+    }
+
+    state.pos = pos + 1;
+    state.posMax = max;
+    return true;
+  });
+
+  // Render inline footnotes as margin notes (Tufte-style floating notes).
+  md.renderer.rules.footnote_ref = function (tokens, idx, options, env, slf) {
+    const id = tokens[idx].meta.id;
+    if (!env.footnotes || !env.footnotes.list) return "";
+    const note = env.footnotes.list[id];
+    if (!note) return "";
+
+    const rendered = slf.renderInline(note.tokens, options, env);
+    const number = id + 1;
+
+    return `<sup class="sidenote-ref">${number}</sup><span class="sidenote">${rendered}</span>`;
+  };
+
+  // Hide the footnote list output (we render notes inline instead).
+  md.renderer.rules.footnote_block_open = () => "";
+  md.renderer.rules.footnote_block_close = () => "";
+  md.renderer.rules.footnote_open = () => "";
+  md.renderer.rules.footnote_close = () => "";
+  md.renderer.rules.footnote_anchor = () => "";
+
   eleventyConfig.setLibrary("md", md);
+
+  // Tufte-style margin notes / sidenotes for markdown content.
+  // Inline usage in markdown: Here is the main text {% sidenote "This is a margin note." %}.
+  // Block usage in markdown: {% sidenoteBlock %}This is a longer note.{% endsidenoteBlock %}
+  eleventyConfig.addShortcode("sidenote", function (content) {
+    return `<span class="sidenote">${content}</span>`;
+  });
+
+  eleventyConfig.addPairedShortcode("sidenoteBlock", function (content) {
+    return `<span class="sidenote">${content}</span>`;
+  });
 
   return {
     dir: {

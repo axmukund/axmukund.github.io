@@ -46,6 +46,40 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Tufte-style margin notes (sidenotes) */
+.content {
+  counter-reset: sidenote;
+}
+
+.sidenote {
+  float: right;
+  clear: right;
+  width: min(16rem, 33%);
+  margin: 0 0 0.45rem 1rem;
+  padding: 0.35rem 0.75rem;
+  border-left: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  position: relative;
+}
+
+.sidenote::before {
+  counter-increment: sidenote;
+  content: counter(sidenote) ".";
+  position: absolute;
+  left: -1.1rem;
+  top: 0;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+  .sidenote-ref {
+    font-size: 0.85em;
+    vertical-align: super;
+  }
+
 .skip-link {
   position: absolute;
   left: -9999px;
