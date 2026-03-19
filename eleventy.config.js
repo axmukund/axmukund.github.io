@@ -148,6 +148,14 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.setLibrary("md", md);
 
+  // Treat posts with `draft: true` as unpublished.
+  // They can still be previewed directly via URL, but they won’t appear in the post list.
+  eleventyConfig.addCollection("posts", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob("src/posts/**/*.md")
+      .filter((item) => !item.data.draft);
+  });
+
   // Tufte-style margin notes / sidenotes for markdown content.
   // Inline usage in markdown: Here is the main text {% sidenote "This is a margin note." %}.
   // Block usage in markdown: {% sidenoteBlock %}This is a longer note.{% endsidenoteBlock %}
