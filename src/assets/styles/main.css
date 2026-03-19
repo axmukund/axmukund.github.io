@@ -248,7 +248,7 @@ li + li {
   min-height: 120px;
   color: inherit;
   background: var(--surface);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+  font-family: inherit;
   font-size: 0.9rem;
 }
 
