@@ -32,6 +32,8 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addTransform("toc", function (content, outputPath) {
     if (!outputPath || !outputPath.endsWith(".html")) return content;
+
+    // Build a TOC from <h2> headings. This runs on every HTML page.
     const headingRe = /<h2[^>]*\sid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/g;
     const headings = [...content.matchAll(headingRe)];
     if (headings.length < 2) return content;
@@ -136,12 +138,15 @@ module.exports = function (eleventyConfig) {
     const rendered = slf.renderInline(note.tokens, options, env);
     const number = id + 1;
 
-    return `<sup class="sidenote-ref" id="snref-${id}"><a href="#sn-${id}">${number}</a></sup><span class="sidenote-data" data-sidenote-id="${id}" hidden>${rendered}</span>`;
+    return `<span class="sidenote-container"><a class="sidenote-link" href="#fn-${id}" id="snref-${id}"><sup class="sidenote-ref">${number}</sup></a><span class="sidenote" id="fn-${id}"><span class="sidenote-number">${number}.</span> ${rendered}</span></span>`;
   };
 
   // Hide the footnote list output (we render notes inline instead).
-  md.renderer.rules.footnote_block_open = () => "";
-  md.renderer.rules.footnote_block_close = () => "";
+  // Wrap in a hidden <div> so that any block-level content inside
+  // (from traditional [^ref]: ... definitions) doesn't leak as
+  // unnumbered text at the bottom of the page.
+  md.renderer.rules.footnote_block_open = () => '<div hidden aria-hidden="true" class="footnote-defs">';
+  md.renderer.rules.footnote_block_close = () => '</div>';
   md.renderer.rules.footnote_open = () => "";
   md.renderer.rules.footnote_close = () => "";
   md.renderer.rules.footnote_anchor = () => "";

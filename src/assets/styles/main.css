@@ -46,88 +46,122 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Tufte-style margin notes (sidenotes) */
-.content {
-  counter-reset: sidenote;
+/* Tufte-style margin notes (sidenotes)
+   Notes are floated right with a negative margin so they sit past the
+   right edge of the prose column, in a blank "margin" area — just like
+   the printed Tufte books and https://rstudio.github.io/tufte/
+*/
+
+/* Expand content width so the margin area is visible.
+   75rem = 1200px — the total budget from left of TOC to right of sidenotes. */
+.content.has-side-notes {
+  max-width: 75rem;
 }
 
-/* The raw sidenote content is stored in hidden elements; it is rendered into the
-   side column by JS so that appearance is consistent across themes. */
-.sidenote,
-.sidenote-data {
-  display: none;
-}
-
-.sidenote-ref {
-  font-size: 0.85em;
-  vertical-align: super;
-}
-
-.post-shell {
-  display: grid;
-  /* give the side column a bit more breathing room */
-  grid-template-columns: minmax(0, var(--measure)) minmax(18rem, 32rem);
-  gap: 2.5rem;
-}
-
-@media (max-width: 66rem) {
-  .post-shell {
-    display: block;
-  }
-}
-
-.post-sidenotes {
-  position: sticky;
-  top: 1rem;
-  align-self: start;
-}
-
-@media (max-width: 66rem) {
-  .post-sidenotes {
-    position: static;
-    top: auto;
-    margin-top: 1.5rem;
-  }
-}
-
-.post-sidenotes .sidenotes {
-  padding: 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 0.45rem;
-  background: var(--surface-alt);
-  max-height: calc(100vh - 2.5rem);
-  overflow: auto;
-  font-size: 0.92rem;
-  line-height: 1.6;
-}
-
-.post-sidenotes .sidenote-item {
-  margin-bottom: 1rem;
-}
-
-.post-sidenotes .sidenote-label {
-  display: inline-block;
-  width: 1.3em;
-  text-align: right;
-  margin-right: 0.4em;
-  font-weight: 600;
+.sidenote {
+  float: right;
+  clear: right;
+  width: 16rem;
+  /* negative margin pulls the note 2rem past the right edge of the prose column */
+  margin-right: calc(-16rem - 2rem);
+  margin-left: 1rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
   color: var(--muted);
-}
-
-.post-sidenotes .sidenote-body {
+  vertical-align: baseline;
+  position: relative;
   overflow-wrap: break-word;
   word-break: break-word;
 }
 
-.post-sidenotes .sidenote-backref {
-  display: inline-block;
-  margin-left: 0.4em;
+.sidenote-number {
+  vertical-align: super;
+  font-size: 0.75em;
+  font-weight: 600;
+  color: var(--muted);
+  margin-right: 0.3em;
+}
+
+.sidenote-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidenote-ref {
+  vertical-align: super;
+  font-size: 0.75em;
   color: var(--muted);
   text-decoration: none;
 }
 
-.post-sidenotes .sidenote-backref:hover {
-  text-decoration: underline;
+/* Briefly highlight the margin note when navigated to via the inline link */
+.sidenote:target {
+  background: var(--highlight-flash, color-mix(in srgb, var(--accent, #d97706) 15%, transparent));
+  border-radius: 4px;
+  outline: 2px solid var(--accent, #d97706);
+  outline-offset: 2px;
+}
+
+/* On narrow screens, sidenotes become tap-to-expand tooltip bubbles */
+@media (max-width: 66rem) {
+  .content.has-side-notes {
+    max-width: var(--measure);
+  }
+
+  /* Positioning anchor for the tooltip */
+  .sidenote-container {
+    display: inline-block;
+    vertical-align: baseline;
+    position: relative;
+  }
+
+  /* The link looks interactive */
+  .sidenote-link {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 2px;
+    text-decoration-color: var(--muted);
+  }
+
+  /* Tooltip bubble — hidden by default */
+  .sidenote {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    /* --tooltip-nudge is set by JS to keep the bubble inside the viewport */
+    transform: translateX(calc(-50% + var(--tooltip-nudge, 0px)));
+    /* clamp between 12rem and 18rem, but never wider than most of the screen */
+    width: clamp(12rem, 75vw, 18rem);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+    float: none;
+    margin: 0;
+    /* small downward arrow */
+  }
+  .sidenote::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--border);
+  }
+
+  /* Revealed when tapped */
+  .sidenote-container.open .sidenote {
+    display: block;
+  }
 }
 
 .skip-link {
@@ -424,12 +458,14 @@ li + li {
 
 @media (min-width: 66rem) {
   .content.has-side-toc {
-    max-width: 78rem;
+    /* 75rem keeps TOC + prose + any sidenotes within the 1200px budget */
+    max-width: 75rem;
   }
 
   .content.has-side-toc .post-shell {
     display: grid;
-    grid-template-columns: minmax(14rem, 18rem) minmax(0, var(--measure));
+    /* 14rem TOC + 2rem gap + up to 40rem prose = 56rem, leaving 19rem for sidenotes */
+    grid-template-columns: minmax(12rem, 14rem) minmax(0, 40rem);
     gap: 2rem;
     align-items: start;
   }

@@ -85,87 +85,32 @@
         var hasNotes = noteData.length > 0;
         var hasToc = h1 && toc && toc.parentNode === content;
 
-        if (hasToc || hasNotes) {
-          var shell = content.querySelector(".post-shell");
-          var main;
+        if (hasNotes) {
+          content.classList.add("has-side-notes");
+        }
 
-          if (!shell) {
-            shell = document.createElement("div");
-            shell.className = "post-shell";
+        if (hasToc) {
+          var shell = document.createElement("div");
+          shell.className = "post-shell";
+          var main = document.createElement("div");
+          main.className = "post-main";
+          var aside = document.createElement("aside");
+          aside.className = "post-toc";
+          aside.appendChild(toc);
+          shell.appendChild(aside);
+          shell.appendChild(main);
 
-            main = document.createElement("div");
-            main.className = "post-main";
-            shell.appendChild(main);
+          content.insertBefore(shell, h1);
+          main.appendChild(h1);
 
-            // Move all existing content into the new main container.
-            while (content.firstChild) {
-              main.appendChild(content.firstChild);
-            }
-
-            content.appendChild(shell);
-          } else {
-            main = shell.querySelector(".post-main");
+          var next = shell.nextSibling;
+          while (next) {
+            var move = next;
+            next = next.nextSibling;
+            main.appendChild(move);
           }
 
-          if (hasToc) {
-            var tocAside = shell.querySelector(".post-toc");
-            if (!tocAside) {
-              tocAside = document.createElement("aside");
-              tocAside.className = "post-toc";
-              shell.insertBefore(tocAside, main);
-            }
-            tocAside.appendChild(toc);
-            content.classList.add("has-side-toc");
-          }
-
-          if (hasNotes) {
-            var notesAside = shell.querySelector(".post-sidenotes");
-            if (!notesAside) {
-              notesAside = document.createElement("aside");
-              notesAside.className = "post-sidenotes";
-              shell.appendChild(notesAside);
-            }
-
-            content.classList.add("has-side-notes");
-
-            var list = document.createElement("div");
-            list.className = "sidenotes";
-
-            noteData.forEach(function (note, idx) {
-              var id = note.dataset.sidenoteId || String(idx);
-              var number = idx + 1;
-
-              var item = document.createElement("div");
-              item.className = "sidenote-item";
-              item.id = "sn-" + id;
-
-              var label = document.createElement("span");
-              label.className = "sidenote-label";
-              label.textContent = number + ".";
-
-              var body = document.createElement("div");
-              body.className = "sidenote-body";
-              body.innerHTML = note.innerHTML;
-
-              var back = document.createElement("a");
-              back.className = "sidenote-backref";
-              back.href = "#snref-" + id;
-              back.textContent = "↩";
-
-              item.appendChild(label);
-              item.appendChild(body);
-              item.appendChild(back);
-
-              var ref = document.querySelector("#snref-" + id + " a");
-              if (ref) ref.textContent = number;
-
-              list.appendChild(item);
-              note.remove();
-            });
-
-            notesAside.innerHTML = "";
-            notesAside.appendChild(list);
-          }
+          content.classList.add("has-side-toc");
         }
 
         var h2s = Array.from(content.querySelectorAll("h2"));
@@ -207,6 +152,49 @@
 
         openFromHash();
         window.addEventListener("hashchange", openFromHash);
+
+        // Sidenote behaviour:
+        //   Narrow screens  → intercept the <a> click, show tooltip bubble.
+        //   Wide screens    → let the <a href="#fn-N"> link work naturally;
+        //                     the :target CSS rule briefly highlights the note.
+        var narrowQuery = window.matchMedia("(max-width: 66rem)");
+        document.querySelectorAll(".sidenote-link").forEach(function (link) {
+          link.addEventListener("click", function (e) {
+            if (!narrowQuery.matches) return; // wide: normal link navigation
+            e.preventDefault();
+            e.stopPropagation();
+            var container = link.closest(".sidenote-container");
+            if (!container) return;
+            var isOpen = container.classList.contains("open");
+            document.querySelectorAll(".sidenote-container.open").forEach(function (c) {
+              c.querySelector(".sidenote").style.removeProperty("--tooltip-nudge");
+              c.classList.remove("open");
+            });
+            if (!isOpen) {
+              container.classList.add("open");
+              // Nudge the tooltip so it stays within the viewport
+              requestAnimationFrame(function () {
+                var tip = container.querySelector(".sidenote");
+                if (!tip) return;
+                var rect = tip.getBoundingClientRect();
+                var margin = 8;
+                var nudge = 0;
+                if (rect.left < margin) {
+                  nudge = margin - rect.left;
+                } else if (rect.right > window.innerWidth - margin) {
+                  nudge = (window.innerWidth - margin) - rect.right;
+                }
+                if (nudge !== 0) tip.style.setProperty("--tooltip-nudge", nudge + "px");
+              });
+            }
+          });
+        });
+        // Tap anywhere else closes open notes
+        document.addEventListener("click", function () {
+          document.querySelectorAll(".sidenote-container.open").forEach(function (c) {
+            c.classList.remove("open");
+          });
+        });
       })();
     </script>
   </body>

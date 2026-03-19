@@ -5,6 +5,7 @@
   "description": "Personal website with posts, recommendations, and useful links",
   "scripts": {
     "dev": "eleventy --serve",
+    "dev:drafts": "ELEVENTY_DRAFTS=1 eleventy --serve",
     "build": "eleventy",
     "clean": "rm -rf _site"
   },
