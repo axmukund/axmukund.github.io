@@ -65,8 +65,9 @@ body {
 
 .post-shell {
   display: grid;
-  grid-template-columns: minmax(0, var(--measure)) minmax(16rem, 22rem);
-  gap: 2rem;
+  /* give the side column a bit more breathing room */
+  grid-template-columns: minmax(0, var(--measure)) minmax(18rem, 32rem);
+  gap: 2.5rem;
 }
 
 @media (max-width: 66rem) {
@@ -90,12 +91,14 @@ body {
 }
 
 .post-sidenotes .sidenotes {
-  padding: 1rem;
+  padding: 1.25rem;
   border: 1px solid var(--border);
   border-radius: 0.45rem;
   background: var(--surface-alt);
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 2.5rem);
   overflow: auto;
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .post-sidenotes .sidenote-item {
