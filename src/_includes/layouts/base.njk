@@ -80,28 +80,92 @@
 
         var h1 = content.querySelector("h1");
         var toc = content.querySelector(".toc");
-        if (h1 && toc && toc.parentNode === content) {
-          var shell = document.createElement("div");
-          shell.className = "post-shell";
-          var main = document.createElement("div");
-          main.className = "post-main";
-          var aside = document.createElement("aside");
-          aside.className = "post-toc";
-          aside.appendChild(toc);
-          shell.appendChild(aside);
-          shell.appendChild(main);
+        // Build a layout shell if the page has either a table of contents or sidenotes.
+        var noteData = Array.from(content.querySelectorAll(".sidenote, .sidenote-data"));
+        var hasNotes = noteData.length > 0;
+        var hasToc = h1 && toc && toc.parentNode === content;
 
-          content.insertBefore(shell, h1);
-          main.appendChild(h1);
+        if (hasToc || hasNotes) {
+          var shell = content.querySelector(".post-shell");
+          var main;
 
-          var next = shell.nextSibling;
-          while (next) {
-            var move = next;
-            next = next.nextSibling;
-            main.appendChild(move);
+          if (!shell) {
+            shell = document.createElement("div");
+            shell.className = "post-shell";
+
+            main = document.createElement("div");
+            main.className = "post-main";
+            shell.appendChild(main);
+
+            // Move all existing content into the new main container.
+            while (content.firstChild) {
+              main.appendChild(content.firstChild);
+            }
+
+            content.appendChild(shell);
+          } else {
+            main = shell.querySelector(".post-main");
           }
 
-          content.classList.add("has-side-toc");
+          if (hasToc) {
+            var tocAside = shell.querySelector(".post-toc");
+            if (!tocAside) {
+              tocAside = document.createElement("aside");
+              tocAside.className = "post-toc";
+              shell.insertBefore(tocAside, main);
+            }
+            tocAside.appendChild(toc);
+            content.classList.add("has-side-toc");
+          }
+
+          if (hasNotes) {
+            var notesAside = shell.querySelector(".post-sidenotes");
+            if (!notesAside) {
+              notesAside = document.createElement("aside");
+              notesAside.className = "post-sidenotes";
+              shell.appendChild(notesAside);
+            }
+
+            content.classList.add("has-side-notes");
+
+            var list = document.createElement("div");
+            list.className = "sidenotes";
+
+            noteData.forEach(function (note, idx) {
+              var id = note.dataset.sidenoteId || String(idx);
+              var number = idx + 1;
+
+              var item = document.createElement("div");
+              item.className = "sidenote-item";
+              item.id = "sn-" + id;
+
+              var label = document.createElement("span");
+              label.className = "sidenote-label";
+              label.textContent = number + ".";
+
+              var body = document.createElement("div");
+              body.className = "sidenote-body";
+              body.innerHTML = note.innerHTML;
+
+              var back = document.createElement("a");
+              back.className = "sidenote-backref";
+              back.href = "#snref-" + id;
+              back.textContent = "↩";
+
+              item.appendChild(label);
+              item.appendChild(body);
+              item.appendChild(back);
+
+              var ref = document.querySelector("#snref-" + id + " a");
+              if (ref) ref.textContent = number;
+
+              list.appendChild(item);
+              note.remove();
+            });
+
+            notesAside.innerHTML = "";
+            notesAside.appendChild(list);
+          }
         }
 
         var h2s = Array.from(content.querySelectorAll("h2"));

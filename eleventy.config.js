@@ -136,7 +136,7 @@ module.exports = function (eleventyConfig) {
     const rendered = slf.renderInline(note.tokens, options, env);
     const number = id + 1;
 
-    return `<sup class="sidenote-ref">${number}</sup><span class="sidenote">${rendered}</span>`;
+    return `<sup class="sidenote-ref" id="snref-${id}"><a href="#sn-${id}">${number}</a></sup><span class="sidenote-data" data-sidenote-id="${id}" hidden>${rendered}</span>`;
   };
 
   // Hide the footnote list output (we render notes inline instead).
@@ -148,12 +148,19 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.setLibrary("md", md);
 
-  // Treat posts with `draft: true` as unpublished.
-  // They can still be previewed directly via URL, but they won’t appear in the post list.
+  // Treat posts with `draft: true` as unpublished, unless the dev server is
+  // explicitly asked to show drafts (via `ELEVENTY_DRAFTS=1`).
+  //
+  // This lets you preview draft posts in `/posts/` locally while keeping them
+  // hidden from production builds.
+  const showDrafts =
+    process.env.ELEVENTY_DRAFTS === "1" ||
+    process.env.ELEVENTY_DRAFTS === "true";
+
   eleventyConfig.addCollection("posts", function (collectionApi) {
     return collectionApi
       .getFilteredByGlob("src/posts/**/*.md")
-      .filter((item) => !item.data.draft);
+      .filter((item) => showDrafts || !item.data.draft);
   });
 
   // Tufte-style margin notes / sidenotes for markdown content.

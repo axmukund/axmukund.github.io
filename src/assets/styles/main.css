@@ -51,34 +51,81 @@ body {
   counter-reset: sidenote;
 }
 
-.sidenote {
-  float: right;
-  clear: right;
-  width: min(16rem, 33%);
-  margin: 0 0 0.45rem 1rem;
-  padding: 0.35rem 0.75rem;
-  border-left: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.85);
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.5;
-  position: relative;
+/* The raw sidenote content is stored in hidden elements; it is rendered into the
+   side column by JS so that appearance is consistent across themes. */
+.sidenote,
+.sidenote-data {
+  display: none;
 }
 
-.sidenote::before {
-  counter-increment: sidenote;
-  content: counter(sidenote) ".";
-  position: absolute;
-  left: -1.1rem;
-  top: 0;
+.sidenote-ref {
+  font-size: 0.85em;
+  vertical-align: super;
+}
+
+.post-shell {
+  display: grid;
+  grid-template-columns: minmax(0, var(--measure)) minmax(16rem, 22rem);
+  gap: 2rem;
+}
+
+@media (max-width: 66rem) {
+  .post-shell {
+    display: block;
+  }
+}
+
+.post-sidenotes {
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+}
+
+@media (max-width: 66rem) {
+  .post-sidenotes {
+    position: static;
+    top: auto;
+    margin-top: 1.5rem;
+  }
+}
+
+.post-sidenotes .sidenotes {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: var(--surface-alt);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+}
+
+.post-sidenotes .sidenote-item {
+  margin-bottom: 1rem;
+}
+
+.post-sidenotes .sidenote-label {
+  display: inline-block;
+  width: 1.3em;
+  text-align: right;
+  margin-right: 0.4em;
   font-weight: 600;
   color: var(--muted);
 }
 
-  .sidenote-ref {
-    font-size: 0.85em;
-    vertical-align: super;
-  }
+.post-sidenotes .sidenote-body {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.post-sidenotes .sidenote-backref {
+  display: inline-block;
+  margin-left: 0.4em;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.post-sidenotes .sidenote-backref:hover {
+  text-decoration: underline;
+}
 
 .skip-link {
   position: absolute;
