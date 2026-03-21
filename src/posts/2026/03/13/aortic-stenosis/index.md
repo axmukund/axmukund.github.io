@@ -4,6 +4,7 @@ tags:
   - posts
 title: Pushing against a fixed obstruction; or, the turbulent hemodynamics of aortic stenosis
 description: An ill-informed and broadly incorrect understanding of how turbulent flow affects cardiac output in aortic stenosis
+date: 2026-03-13
 ---
 
 # Pushing against a fixed obstruction; or, the turbulent hemodynamics of aortic stenosis
