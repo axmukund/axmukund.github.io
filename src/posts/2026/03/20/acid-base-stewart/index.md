@@ -142,29 +142,31 @@ Then, solving for $h$ gives you the pH of the system (blood/plasma) as a functio
 
 This approach was developed by Canadian physiologist Peter Stewart, who hallucinated this algebraic torture in the early 1980s. The idea is to focus on 3 independent variables: the difference between strong cations and anions (strong ion difference), the pCO$_2$, and the total weak acid amount (albumin and phosphate, mostly). 
 
-Importantly, look at what we _aren't_ directly using as a variable that affects the pH -- the bicarbonate. Under this approach, the bicarb is actually a _result_ of all of the other stuff -- the strong ion difference, the pH, the pCO$_2$, and the other weak acids. The value of the bicarb is just whatever it needs to be for the whole system to play nice -- it's the _dependent_ variable, not the independent one^{You can also see this from the fact that the bicarb is directly computable from these parameters as $k_c c / h$.}. 
-
 ## The strategic stacked bar chart reserve
 
-You may be wondering why anyone would want to use this approach. Beyond the fact that it can make one feel smart^{Don't underestimate this} and that it gives you a certain condescension budget which you can spend liberally on rounds^{So long as you avoid depleting the strategic parentheses reserve, that would get the LISPers mad}, it can help in a couple of specific ways: 
+Importantly, look at what we _aren't_ directly using as a variable that affects the pH -- the bicarbonate. Under this approach, the bicarb is actually a _result_ of all of the other stuff -- the strong ion difference, the pCO$_2$, and the other weak acids. The value of the bicarb is just whatever it needs to be for the whole system to play nice -- it's the _dependent_ variable, not the independent one^{You can also see this from the fact that the bicarb is directly computable from these parameters as $k_c c / h$.}. In other words, bicarb and pH are the same -- and if we think of pH as the dependent variable, the result of a bunch of other processes (which we do) -- then why should bicarb be any different? 
+
+You may be wondering why anyone would want to use this approach. Beyond the fact that it can make one feel smart^{Don't underestimate this} and that it gives you a certain condescension budget which you can spend liberally on rounds^{So long as you avoid depleting the strategic parentheses reserve, that would get the LISPers mad}, it can help in a few particular scenarios where it is more useful to think about anion-cation balance than acid-base status: 
 
 1. You don't have to deal with an empiric formula derived from who knows where^{Someone probably knows from where} to figure out what to do with albumin or how to correct for it. Less albumin = less weak acid, which directly leads to higher bicarb to fill in the gap. 
 2. Contraction alkaloses become a lot simpler -- you give someone truckloads of furosemide, you lose a proportionally larger amount of chloride than sodium^{The NKCC channels inhibited by loop diuretics move 2 chlorides for 1 sodium and 1 potassium}, bicarb expands to fill in the gap and maintain electroneutrality. 
 3. Giving someone a large amount of normal saline induces a hyperchloremic acidosis -- you give them more chloride than is present in serum, so chloride goes up, so bicarb drops/gets squeezed out to keep things neutral. 
 
-All this said, clinically speaking, the debate between the traditional approach -- base excess, anion gap -- and the physicochemical approach is largely academic. Assuming you work through all the relevant steps appropriately, you will get to the correct conclusion with either approach. However, only one has ["intoxicating mathematical integrity"](https://derangedphysiology.com/main/cicm-primary-exam/acid-base-physiology/Chapter-501/strong-ion-difference-normal-anion-gap-acidosis). 
-
-One of the major intuitions here is that bicarb and pH are the same -- and if we think of pH as the dependent variable, the result of a bunch of other processes (which we do) -- then why should bicarb be any different? 
-
-We can  visualize this acid/base balance using a Gamblegram^{named after physiologist James Gamble, who will hopefully become the topic of a future blog post}, which maps out anions and cations on a pair of stacked bar charts: 
+We can visualize this acid/base balance using a Gamblegram^{Named after physiologist James Gamble, who will hopefully become the topic of a future blog post}, which maps out anions and cations on a pair of stacked bar charts: 
 <figure>
   <img src="./assets/stewart_nagma_dphys.jpg" alt="Gamblegram" loading="lazy"/>
   <figcaption>Example Gamblegram with some annotations, taken from <a href=https://derangedphysiology.com/main/cicm-primary-exam/acid-base-physiology/Chapter-501/strong-ion-difference-normal-anion-gap-acidosis>here</a></figcaption>
 </figure>
 
+The idea here is that instead of computing a series of quantities and looking at what fits in what arbitrary reference range, you can _directly examine_ the anion-cation balance and see what's out of whack. Are there a bunch of anions -- for example, lactate or $\beta$-hydroxybutyrate -- that are squeezing out the bicarb? Is the chloride way too low since we over-diuresed someone, and bicarb had to expand to fill in the gap? Is there zero albumin, and so something's gotta make up the difference? Did we flood someone with normal saline, send their chloride flying up to the sky, and then the bicarb had to go run away because there was no more space in the Gamblegram? 
+
+This turns mysterious acid-base problems with various formulae and corrections into very concrete (and simple) questions about the balance between anions and cations -- and, to me, this is a much easier frame to reason about. Anions minus cations equals zero. Everything else is just bonus. 
+
 If you want to be able to build a lil Gamblegram on the fly at the bedside there are a number of apps and websites that do it. For much of my intern year I used [https://medischesnippers.nl/stewart/](https://medischesnippers.nl/stewart/), and then I built [https://axmukund.github.io/stewart/](https://axmukund.github.io/stewart/) when UCSF briefly forgot to rate-limit the enterprise OpenAI account they gave us. They didn't forget for very long. 
 
 The physicochemical calculator on my page does some fancy stuff to estimate ionized magnesium and calcium, uses per-residue models of albumin protonation and a full triprotic approximation of phosphate ionization, and lets you do fun things like use the BMP bicarb for the Gamblegram instead of using the inferred bicarb off a blood gas. But enough about that. 
+
+All this said, clinically speaking, the debate between the traditional approach -- base excess, anion gap -- and the physicochemical approach is largely academic. Assuming you work through all the relevant steps appropriately, you will get to the correct conclusion with either approach. However, only one has ["intoxicating mathematical integrity"](https://derangedphysiology.com/main/cicm-primary-exam/acid-base-physiology/Chapter-501/strong-ion-difference-normal-anion-gap-acidosis). 
 
 ## Derivatives of the Stewart model
 
@@ -226,14 +228,11 @@ $$
 \partial_h \partial_A F &= -2k_a h
 \end{align*}
 $$
-And, if you squint, you'll note that all the other entries of the Hessian are zero, since the other first order partial derivatives solely depend on $h$. 
-
-Since the degree of the Hessian is 2, this isn't a particularly curvey or nonlinear system, and the only nonlinearity here is a result of $h$ (which is $[\rm{H}^+]$) -- all the other variables only have "linear" effects. 
+If you squint, you'll note that all the other entries of the Hessian are zero, since the other first order partial derivatives solely depend on $h$. And, $F$ is only nonlinear with respect to $h$ -- with respect to $s$, $A$, or $c$, it's independently linear in each term. 
 
 Clinically, what this means is that _there are no cross terms_ -- changing the pCO$_2$ won't affect how, for example, changing the SID affects the pH. Each of the three independent variables/levers affects the pH independently. Stated alternately, the net effect we see is the _sum_ of the individual effects of the pCO$_2$, the weak acids, and the strong ion difference. There's no hidden product or other weirdness we have to account for. There are no synergies or antagonisms or TPS reports^{In practice, because of things like renal compensation, intracellular shifts, nonlinear protein buffering with e.g. albumin, there is actually some nonlinearity in the system. However, the system is "close enough" to linear that this approximation method is more or less on the money.}.
 
 In essence, this is the mathematical "proof" for, or demonstration of, why acid-base disturbances can neatly be decomposed into the effects of the SID, the amount of weak acid, and the respiratory/pCO$_2$ component. 
-
 ## TL;DR
 
 [Check this lil calculator out](https://axmukund.github.io/stewart/) 
