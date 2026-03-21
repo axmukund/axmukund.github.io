@@ -1,0 +1,16 @@
+{
+  "extends": ["config:base"],
+  "automerge": false,
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^actions/"],
+      "automerge": true,
+      "labels": ["renovate", "actions"]
+    },
+    {
+      "matchPackagePatterns": ["^@?npm/"],
+      "automerge": false,
+      "labels": ["renovate", "npm"]
+    }
+  ]
+}
