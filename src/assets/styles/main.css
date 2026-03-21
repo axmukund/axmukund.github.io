@@ -187,6 +187,31 @@ body {
   padding: 1.4rem 1rem;
 }
 
+.katex-display {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.15rem 0.25rem;
+  border-radius: 0.2rem;
+  background: transparent;
+}
+
+.katex-display .katex,
+.katex {
+  min-width: max-content;
+}
+
+.katex-display::-webkit-scrollbar {
+  height: 10px;
+}
+
+.katex-display::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
 .site-nav {
   display: flex;
   gap: 1rem;
