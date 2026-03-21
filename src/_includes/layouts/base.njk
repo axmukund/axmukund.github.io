@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% if title %}{{ title }} · {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ description or site.description }}" />
-    <link id="favicon-32x32" rel="icon" type="image/png" href="/assets/icons/favicons/light/favicon-32x32.png" sizes="32x32" />
-    <link id="favicon-16x16" rel="icon" type="image/png" href="/assets/icons/favicons/light/favicon-16x16.png" sizes="16x16" />
-    <link id="favicon-ico" rel="shortcut icon" href="/assets/icons/favicons/light/favicon.ico" />
-    <link id="apple-touch-icon" rel="apple-touch-icon" href="/assets/icons/favicons/light/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: light)" href="/assets/icons/favicons/light/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" media="(prefers-color-scheme: light)" href="/assets/icons/favicons/light/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: dark)" href="/assets/icons/favicons/dark/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" media="(prefers-color-scheme: dark)" href="/assets/icons/favicons/dark/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/assets/icons/favicons/light/favicon.ico" />
+    <link rel="apple-touch-icon" media="(prefers-color-scheme: light)" href="/assets/icons/favicons/light/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" media="(prefers-color-scheme: dark)" href="/assets/icons/favicons/dark/apple-touch-icon.png" />
     <script>
       (function () {
         var storageKey = "theme-mode";
@@ -26,28 +29,9 @@
           return hour >= 19 || hour < 7 ? "dark" : "light";
         }
 
-        function setFavicon(theme) {
-          var folder = theme === "dark" ? "dark" : "light";
-          var mapping = [
-            { id: "favicon-32x32", file: "favicon-32x32.png" },
-            { id: "favicon-16x16", file: "favicon-16x16.png" },
-            { id: "favicon-ico", file: "favicon.ico" },
-            { id: "apple-touch-icon", file: "apple-touch-icon.png" }
-          ];
-          mapping.forEach(function (item) {
-            var el = document.getElementById(item.id);
-            if (el) {
-              el.href = "/assets/icons/favicons/" + folder + "/" + item.file;
-            }
-          });
-        }
-
-        window.setFavicon = setFavicon;
-
         function applyTheme(theme) {
           root.dataset.theme = theme;
           root.style.colorScheme = theme;
-          setFavicon(theme);
         }
 
         var storedMode = null;
