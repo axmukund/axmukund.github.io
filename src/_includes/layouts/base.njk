@@ -7,23 +7,35 @@
     <meta name="description" content="{{ description or site.description }}" />
     <script>
       (function () {
-        var storageKey = "theme-preference";
-        var hour = new Date().getHours();
-        var isNight = hour >= 19 || hour < 7;
-        var storedTheme = null;
+        var storageKey = "theme-mode";
+        var root = document.documentElement;
 
-        try {
-          storedTheme = localStorage.getItem(storageKey);
-        } catch (error) {
-          storedTheme = null;
+        function getSystemBaseTheme() {
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
+          if (prefersLight || prefersDark) {
+            return prefersDark ? "dark" : "light";
+          }
+
+          var hour = new Date().getHours();
+          return hour >= 19 || hour < 7 ? "dark" : "light";
         }
 
-        var theme = storedTheme === "dark" || storedTheme === "light"
-          ? storedTheme
-          : (isNight ? "dark" : "light");
+        function applyTheme(theme) {
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+        }
 
-        document.documentElement.dataset.theme = theme;
-        document.documentElement.style.colorScheme = theme;
+        var storedMode = null;
+        try {
+          storedMode = localStorage.getItem(storageKey);
+        } catch (error) {
+          storedMode = null;
+        }
+
+        var mode = storedMode === "light" || storedMode === "dark" || storedMode === "system" ? storedMode : "system";
+        applyTheme(mode === "system" ? getSystemBaseTheme() : mode);
       })();
     </script>
     <link rel="stylesheet" href="/assets/styles/main.css" />
@@ -36,39 +48,82 @@
         {% for item in nav %}
           <a {% if page.url == item.url %}aria-current="page"{% endif %} href="{{ item.url }}">{{ item.label }}</a>
         {% endfor %}
-        <button class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
-          Dark mode
-        </button>
+        <label for="theme-mode-select" class="theme-mode-label" style="margin-left:1rem;">
+          Theme:
+          <select id="theme-mode-select" class="theme-mode" aria-label="Theme mode">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
       </nav>
     </header>
     <main id="content" class="content">{{ content | safe }}</main>
     <script>
       (function () {
-        var storageKey = "theme-preference";
+        var storageKey = "theme-mode";
         var root = document.documentElement;
-        var button = document.querySelector(".theme-toggle");
+        var select = document.getElementById("theme-mode-select");
 
-        if (!button) {
-          return;
+        function getSystemBaseTheme() {
+          var isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (window.matchMedia("(prefers-color-scheme: light)").matches || window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            return isDark ? "dark" : "light";
+          }
+
+          var hour = new Date().getHours();
+          return hour >= 19 || hour < 7 ? "dark" : "light";
         }
 
         function applyTheme(theme) {
-          var isDark = theme === "dark";
           root.dataset.theme = theme;
           root.style.colorScheme = theme;
-          button.setAttribute("aria-pressed", String(isDark));
-          button.textContent = isDark ? "Light mode" : "Dark mode";
         }
 
-        applyTheme(root.dataset.theme || "light");
+        function updateThemeFromMode(mode) {
+          var theme = mode;
+          if (mode === "system") {
+            theme = getSystemBaseTheme();
+          }
+          applyTheme(theme);
+        }
 
-        button.addEventListener("click", function () {
-          var nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
-          applyTheme(nextTheme);
+        function setMode(mode) {
+          if (!select) return;
+          select.value = mode;
 
           try {
-            localStorage.setItem(storageKey, nextTheme);
+            localStorage.setItem(storageKey, mode);
           } catch (error) {
+          }
+
+          updateThemeFromMode(mode);
+        }
+
+        if (!select) {
+          return;
+        }
+
+        var storedMode = null;
+        try {
+          storedMode = localStorage.getItem(storageKey);
+        } catch (error) {
+          storedMode = null;
+        }
+
+        if (storedMode !== "system" && storedMode !== "light" && storedMode !== "dark") {
+          storedMode = "system";
+        }
+
+        setMode(storedMode);
+
+        select.addEventListener("change", function () {
+          setMode(select.value);
+        });
+
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+          if (select.value === "system") {
+            updateThemeFromMode("system");
           }
         });
       })();
