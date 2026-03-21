@@ -254,6 +254,13 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
+.theme-mode-label {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .theme-mode {
   font: inherit;
   color: var(--fg);
@@ -261,7 +268,6 @@ a:focus-visible {
   border: 1px solid var(--border);
   border-radius: 0.35rem;
   padding: 0.25rem 0.4rem;
-  margin-left: 0.5rem;
 }
 
 .theme-mode:focus-visible {
