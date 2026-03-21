@@ -144,7 +144,7 @@ This approach was developed by Canadian physiologist Peter Stewart, who hallucin
 
 ## The strategic stacked bar chart reserve
 
-Importantly, look at what we _aren't_ directly using as a variable that affects the pH -- the bicarbonate. Under this approach, the bicarb is actually a _result_ of all of the other stuff -- the strong ion difference, the pCO$_2$, and the other weak acids. The value of the bicarb is just whatever it needs to be for the whole system to play nice -- it's the _dependent_ variable, not the independent one^{You can also see this from the fact that the bicarb is directly computable from these parameters as $k_c c / h$.}. In other words, bicarb and pH are the same -- and if we think of pH as the dependent variable, the result of a bunch of other processes (which we do) -- then why should bicarb be any different? 
+Importantly, look at what we _aren't_ directly using as a variable that affects the pH -- the bicarbonate. Under this approach, the bicarb is actually a _result_ of all of the other stuff -- the strong ion difference, the pCO$_2$, and the other weak acids. The value of the bicarb is just whatever it needs to be for the whole system to play nice -- it's the _dependent_ variable, not the independent one^{You can also see this from the fact that the bicarb is directly computable from these parameters as $k_c c / h$.}. In other words, bicarb and pH are linked by an equilibrium -- and if we think of pH as the dependent variable, the result of a bunch of other processes (which we do) -- then why should bicarb be any different? 
 
 You may be wondering why anyone would want to use this approach. Beyond the fact that it can make one feel smart^{Don't underestimate this} and that it gives you a certain condescension budget which you can spend liberally on rounds^{So long as you avoid depleting the strategic parentheses reserve, that would get the LISPers mad}, it can help in a few particular scenarios where it is more useful to think about anion-cation balance than acid-base status: 
 
@@ -208,9 +208,19 @@ $$
 \frac{\partial F}{\partial A} &= -h^2k_a
 \end{align*}
 $$ 
-If we fix $h$, then we can figure out a few things: 
-1. The partial derivatives of $F$ with respect to $s$, $c$, and $A$ are never $0$ -- there are no local maxima or minima, and the extrema of the surface $F = 0$ will be along the boundary of your constraints. If you do something to make the pH go up, it won't all of a sudden drop if you keep doing it. 
-2. Computing these partial derivatives IRL can help you figure out which lever would be the most effective to directly raise (or lower) a patient's pH -- or, as a result, manipulate their bicarb level. 
+We then work with the implicit function $h(s, c, A)$ after assuming (not unreasonably) $F(h, s, c, A) = 0$. By the implicit function theorem^{Here, the idea being that $\partial h / \partial s = -(\partial F / \partial s) / (\partial F / \partial h)$ and so on and so forth}, we have: 
+$$
+\begin{align*}
+\frac{\partial h}{\partial s} &= -\frac{h^2 (h + k_a)}{F_h} \\ 
+\frac{\partial h}{\partial c} &= \frac{k_c(h+k_a)(h+k_b)}{F_h} \\
+\frac{\partial h}{\partial A} &= -\frac{h^2k_a}{F_h}
+\end{align*}
+$$
+where $F_h = \partial F / \partial h$, which is too unwieldy to fully expand each time. 
+
+Off the bat, this gives you a) that raising the albumin and/or pCO$_2$ drops the ph ($\partial h/\partial A > 0,\ \partial h/\partial c > 0$); b) that raising the strong ion difference increases the pH ($\partial h / \partial s < 0$); and c) the effect of these changes changes as the pH changes. 
+
+Additionally, because these first order partial derivatives never change their sign^{assuming $F_h \ne 0$ and does not change sign, which is true in physiological regimes}, the effects of the perturbations won't flip about. As you increase the SID, the pH won't start to go up and then all of a sudden start going down -- effects are **directionally stable**. 
 
 ### The Hessian
 
@@ -228,11 +238,22 @@ $$
 \partial_h \partial_A F &= -2k_a h
 \end{align*}
 $$
-If you squint, you'll note that all the other entries of the Hessian are zero, since the other first order partial derivatives solely depend on $h$. And, $F$ is only nonlinear with respect to $h$ -- with respect to $s$, $A$, or $c$, it's independently linear in each term. 
 
-Clinically, what this means is that _there are no cross terms_ -- changing the pCO$_2$ won't affect how, for example, changing the SID affects the pH. Each of the three independent variables/levers affects the pH independently. Stated alternately, the net effect we see is the _sum_ of the individual effects of the pCO$_2$, the weak acids, and the strong ion difference. There's no hidden product or other weirdness we have to account for. There are no synergies or antagonisms or TPS reports^{In practice, because of things like renal compensation, intracellular shifts, nonlinear protein buffering with e.g. albumin, there is actually some nonlinearity in the system. However, the system is "close enough" to linear that this approximation method is more or less on the money.}.
+If you squint, you'll note that all the other entries of the Hessian are zero, since the other first order partial derivatives solely depend on $h$. Mixed second derivatives with respect to the other variables are $0$ since $F$ is independently linear^{more specifically, affine-linear, but we'll get to that in a second} in $s, A, c$. 
 
-In essence, this is the mathematical "proof" for, or demonstration of, why acid-base disturbances can neatly be decomposed into the effects of the SID, the amount of weak acid, and the respiratory/pCO$_2$ component. 
+So if you hold $s$ and $A$ constant, $F$ is linear in $c$. But, the _coefficients_ of $F$ with respect to $c$ are actually affected by $s$ and $A$, because of nonlinearity that enters through $h$. Let's take, for example:
+$$
+\begin{align*}
+\frac{\partial^2h}{\partial s \partial c} &= \frac{\partial}{\partial c} \left(- \frac{\partial F / \partial s}{\partial F / \partial h}\right) \\ 
+&= \frac{\partial}{\partial c} \left(- \frac{F_s}{F_h}\right) \\
+&= \frac{\partial}{\partial c} \left(- \frac{h^2(h + k_a)}{F_h}\right)
+\end{align*}
+$$
+
+Even though $F_{sc} = 0$, $h$ depends on $c$ ($[\rm{H}^+]$ is affected by pCO$_2$) and $F_s = h^2 (h + k_a)$ depends on $h$. This is to say, all of the variables we see are coupled through $h$, which means that  $h$ is not strictly linear in $s, A, c$. So, the effects of the SID, pCO$_2$, and weak acids are not strictly independent, though they can be thought of as locally linear if the pH doesn't change too much^{In practice, because of things like renal compensation, intracellular shifts, nonlinear protein buffering with e.g. albumin, there is actually some additional nonlinearity in the system. However, the system is "close enough" to linear within small neighborhoods that this approximation method is more or less on the money.}. 
+
+Stated alternately, the net effect we see with small perturbations can be reasonably well-approximated by the _sum_ of the individual effects of the pCO$_2$, the weak acids, and the strong ion difference. More formally, the system permits a relatively accurate first-order Taylor approximation that decomposes acid-base disturbances into separable effects of the SID, the amount of weak acid, and the respiratory/pCO$_2$ component. 
+
 ## TL;DR
 
 [Check this lil calculator out](https://axmukund.github.io/stewart/) 
