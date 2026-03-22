@@ -48,27 +48,11 @@
 	- Build check: `npm run build`
 	- Publish: `git add . && git commit -m "Add new post" && git push origin main`
 
-## Adding a recommendation
+## The site now has dark/light theming + favicons
 
-1. Create a markdown file in `src/recs/` (for example `src/recs/2026-03-13-my-rec.md`).
-2. Use front matter like:
-
-	```
-	---
-	layout: layouts/base.njk
-	tags:
-	  - recs
-	title: Recommendation title
-	url: https://example.com
-	---
-	```
-
-3. Add a short note in the body explaining why you recommend it.
-4. Recommendations on `/recs/` are sorted in reverse chronological order (newest first).
-5. Preview and publish:
-	- Preview: `npm run dev`
-	- Build check: `npm run build`
-	- Publish: `git add . && git commit -m "Add recommendation" && git push origin main`
+- Theme dropdown control in nav: System/Light/Dark.
+- System mode uses `prefers-color-scheme` with a night-time fallback.
+- Favicons are configured for both light and dark theme variants in head links.
 
 ## Accessibility defaults
 
