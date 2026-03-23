@@ -93,7 +93,7 @@ This is the secret sauce. In situations of e.g. metabolic or respiratory acidosi
 $$
 s + h - b - x - [\rm{A}^-] - w = 0
 $$
-In this equation $s + h$ is your strong cations minus your strong anions, and $h + b + x + [\rm{A}^-] + w$ is all of your weak anions. Strong anions plus weak anions has to equal strong cations. 
+In this equation $s + h$ is your strong cations minus your strong anions, and $b + x + [\rm{A}^-] + w$ is all of your weak anions. Strong anions plus weak anions has to equal strong cations. 
 
 There are technically some weak cations, in the sense that $\rm{Mg}^{2+}$ and $\rm{Ca}^{2+}$ are partially ionized at physiologic pH, but given their relatively small concentration compared to $\rm{Na}$ we can pretty reasonably ignore this^{Though with the magic of computers, we don't have to! More on that down below.}. 
 
