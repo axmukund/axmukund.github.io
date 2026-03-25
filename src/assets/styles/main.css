@@ -154,8 +154,15 @@ body {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-top-color: var(--border);
+    width: 0.9rem;
+    height: 0.5rem;
+    background: var(--bg);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    margin-top: -1px;
   }
 
   /* Revealed when tapped */
