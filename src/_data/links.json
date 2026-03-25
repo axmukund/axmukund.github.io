@@ -3,5 +3,10 @@
 		"label": "Physicochemical Acid-Base Calculator",
 		"url": "https://axmukund.github.io/stewart",
 		"icon": "https://axmukund.github.io/stewart/favicon.svg"
+	},
+	{
+		"label": "IM Admissions Checklist",
+		"url": "/assets/admission_checklist/admission_checklist.pdf",
+		"icon": "assets/admission_checklist/checklist_icon.svg"
 	}
 ]
