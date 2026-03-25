@@ -48,6 +48,44 @@
 	- Build check: `npm run build`
 	- Publish: `git add . && git commit -m "Add new post" && git push origin main`
 
+## Numbered figures in Markdown
+
+You can now insert captioned, numbered figures without raw HTML using:
+
+- a dedicated shortcode: `{% figure ... %}`
+- a compact Markdown shim: `!{fig}{...}{...}{...}`
+
+### Shortcode style
+
+Single-panel example:
+
+    {% figure "/assets/posts/2026/03/20/acid-base-stewart/figure1.png", "Plasma anion gap in Stewart model", "Anion gap" %}
+
+Two-panel example:
+
+    {% figure "/assets/posts/2026/03/20/acid-base-stewart/figure1a.png||/assets/posts/2026/03/20/acid-base-stewart/figure1b.png", "Left: value A; Right: value B", "Two panels" %}
+
+### Compact Markdown syntax
+
+Single-panel example:
+
+    !{fig}{/assets/posts/2026/03/20/acid-base-stewart/figure1.png}{Plasma anion gap in Stewart model}{Anion gap}
+
+Two-panel example:
+
+    !{fig}{/assets/posts/2026/03/20/acid-base-stewart/figure1a.png||/assets/posts/2026/03/20/acid-base-stewart/figure1b.png}{Left: A; Right: B}{A/B comparison}
+
+Notes:
+
+- the first argument is image path(s), with `||` separator for multiple panels
+- the second argument is caption text
+- the third (optional) argument is alt text
+- numbering is auto-incremented per page
+
+The figure number increments automatically per page, rendered as:
+
+    Figure 1. Caption...
+
 ## The site now has dark/light theming + favicons
 
 - Theme dropdown control in nav: System/Light/Dark.

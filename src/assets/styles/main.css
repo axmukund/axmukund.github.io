@@ -205,6 +205,46 @@ body {
   background: transparent;
 }
 
+.figure {
+  margin: 2.25rem 0 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.figure-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.6rem;
+}
+
+.figure--single-panel .figure-grid {
+  grid-template-columns: 1fr;
+}
+
+.figure--two-panel .figure-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.figure-panel img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.figure-caption {
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.figure-label {
+  font-weight: 700;
+  margin-right: 0.25rem;
+  color: var(--fg);
+}
+
 .katex-display .katex,
 .katex {
   min-width: max-content;

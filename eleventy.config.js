@@ -179,6 +179,66 @@ module.exports = function (eleventyConfig) {
     return `<span class="sidenote">${content}</span>`;
   });
 
+  // Figure shortcode with auto-numbered captions and optional 2-panel layout.
+  // Also supports markdown shorthand syntax: !{fig}{src}{caption}{alt?}
+  // Usage examples:
+  // {% figure "/assets/img.png", "Caption text" %}
+  // {% figure "/assets/a.png||/assets/b.png", "Caption text" %}
+  let figureCounter = 0;
+  let figureCounterPage = "";
+
+  function renderFigure(src, caption = "", alt = "", pagePath = "") {
+    if (pagePath !== figureCounterPage) {
+      figureCounter = 0;
+      figureCounterPage = pagePath;
+    }
+
+    figureCounter += 1;
+    const figureNumber = figureCounter;
+
+    const sources = (typeof src === "string" ? src.split("||") : [src])
+      .map((path) => path.trim())
+      .filter(Boolean);
+    const isTwoPanel = sources.length > 1;
+
+    const panelHtml = sources
+      .map((imageSrc, index) => {
+        const panelAlt = sources.length > 1 ? `${alt} (${index + 1})` : alt;
+        return `<div class="figure-panel"><img src="${imageSrc}" alt="${panelAlt}" loading="lazy" decoding="async"></div>`;
+      })
+      .join("");
+
+    return `
+<figure class="figure ${isTwoPanel ? "figure--two-panel" : "figure--single-panel"}">
+  <figcaption class="figure-caption"><span class="figure-label">Figure ${figureNumber}.</span> ${caption}</figcaption>
+  <div class="figure-grid">${panelHtml}</div>
+</figure>
+`;
+  }
+
+  eleventyConfig.addShortcode("figure", function (src, caption = "", alt = "") {
+    return renderFigure(src, caption, alt, this.page?.inputPath || "");
+  });
+
+  md.inline.ruler.before("emphasis", "figure_syntax", function (state, silent) {
+    const start = state.pos;
+    const srcText = state.src.slice(start);
+    const match = /^!\{fig\}\{([^}]+)\}\{([^}]+)\}(?:\{([^}]+)\})?/.exec(srcText);
+    if (!match) return false;
+    if (silent) return true;
+
+    const imageSrc = match[1].trim();
+    const caption = match[2].trim();
+    const alt = (match[3] || "").trim();
+    const pagePath = (state.env && state.env.page && state.env.page.inputPath) || "";
+
+    const token = state.push("html_inline", "", 0);
+    token.content = renderFigure(imageSrc, caption, alt, pagePath);
+
+    state.pos += match[0].length;
+    return true;
+  });
+
   return {
     dir: {
       input: "src",
