@@ -184,17 +184,10 @@ module.exports = function (eleventyConfig) {
   // Usage examples:
   // {% figure "/assets/img.png", "Caption text" %}
   // {% figure "/assets/a.png||/assets/b.png", "Caption text" %}
-  let figureCounter = 0;
-  let figureCounterPage = "";
 
-  function renderFigure(src, caption = "", alt = "", pagePath = "") {
-    if (pagePath !== figureCounterPage) {
-      figureCounter = 0;
-      figureCounterPage = pagePath;
-    }
-
-    figureCounter += 1;
-    const figureNumber = figureCounter;
+  function renderFigure(src, caption = "", alt = "", page = {}) {
+    page.figureCounter = (page.figureCounter || 0) + 1;
+    const figureNumber = page.figureCounter;
 
     const sources = (typeof src === "string" ? src.split("||") : [src])
       .map((path) => path.trim())
@@ -217,7 +210,7 @@ module.exports = function (eleventyConfig) {
   }
 
   eleventyConfig.addShortcode("figure", function (src, caption = "", alt = "") {
-    return renderFigure(src, caption, alt, this.page?.inputPath || "");
+    return renderFigure(src, caption, alt, this.page || {});
   });
 
   md.inline.ruler.before("emphasis", "figure_syntax", function (state, silent) {
@@ -230,10 +223,10 @@ module.exports = function (eleventyConfig) {
     const imageSrc = match[1].trim();
     const caption = match[2].trim();
     const alt = (match[3] || "").trim();
-    const pagePath = (state.env && state.env.page && state.env.page.inputPath) || "";
+    const page = (state.env && state.env.page) || {};
 
     const token = state.push("html_inline", "", 0);
-    token.content = renderFigure(imageSrc, caption, alt, pagePath);
+    token.content = renderFigure(imageSrc, caption, alt, page);
 
     state.pos += match[0].length;
     return true;
