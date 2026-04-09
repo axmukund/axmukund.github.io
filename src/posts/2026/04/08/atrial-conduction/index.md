@@ -1,0 +1,99 @@
+---
+layout: layouts/base.njk
+tags:
+  - posts
+title: Some notes on the atrial conduction system
+description:
+date: 2026-04-08
+---
+# Some notes on the atrial conduction system
+
+Well, if you've made it this far, presumably you, too, were once made to learn that cardiac conduction goes from the SA node to the AV node to the bundle of His, before generally dispersing into various fascicles and Purkinje fibers. In full disclosure, for this section you may be better off reading [this beautiful opus from Deranged Physiology](https://derangedphysiology.com/main/cicm-primary-exam/cardiovascular-system/Chapter-002/excitatory-conductive-and-contractile-elements-heart), but I write this for me and not for you. 
+
+## The SA node
+
+The SA node, where everything conduction begins, is in the left atrium, just below and medial to the SVC, and is more or less a vague blob with some histologic differences from their surroundings that are well beyond my capacity to keep track of. However, the structure of the SA node is maybe a little interesting, in that the various cells in the SA node don't have exactly the same metronomic behavior, and thus oftentimes the cell that triggers SA node firing in one cycle is different from the one that triggers firing in the next. This behavior is called _pacemaker shift_. 
+
+The mechanism of SA firing is interesting enough -- pacemaker cells are essentially constantly depolarizing thanks to a "funny current" mediated by HCN (hyperpolarization-activiated cyclic-nucleotide-gated) channels. Additionally, these cells are quicker to depolarize, with a threshold at $-50\ \rm{mV}$ rather than than the $-70\ \rm{mV}$ of most ventricular myocytes. Eventually, the current leaks its way into triggering full depolarization, though without a "phase 1" or "phase 2" (the peak and plateau you normally see in the cardiac action potential), followed by a gradual repolarization mediated by potassium currents that only gets as far as $-60\ \rm{mV}$ instead of the more vigorous $-90\ \rm{mV}$ resting potential of ventricular myocytes. This gives you the following picture of the pacemaker action potential, with an example of a single tracing stolen shamelessly from [Noma 1996](https://www.jstage.jst.go.jp/article/ihj1960/37/5/37_5_673/_pdf)^{Again, shamelessly sourced via Deranged Physiology}: 
+
+{% figure "./assets/SA_node_potential_noma.png", "SA node voltage/potential over time", "" %}
+
+### Sinoatrial pacing 
+
+Interestingly enough for me and probably not for you, the SA node is not just a little blob, but is itself actually a complicated network ([Zhao et al 2023](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011708)), with studies of explanted human hearts showing the SA node is composed of 3 pacemaker components, inventively named the _head_, _center_, and _tail_. Intriguingly, both the intrinsic cardiac cycle length and the expression patterns of various receptors (e.g. adenosine receptors) of these regions varies across space, offering a potential anatomic explanation both for pacemaker shift _and_ for the observation that perturbations of the SA node (again, e.g. flooding with adenosine) lead to changes in the spatial distributions of which cells drive cardiac pacing. To pull a block quote from the article that probably will illuminate precisely nothing: 
+
+> Importantly, increasing the concentration of adenosine from 0% to 100% in the computer models (**Figs [2A](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011708#pcbi-1011708-g002) and [3A](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011708#pcbi-1011708-g003)**) led to progressive slowing of the SCL and SACT in parallel with a shift in the leading pacemaker and earliest atrial activation sites, until complete atrial arrest at 100% adenosine concentration. The simulation results show that the leading pacemaker shifted inferiorly from the SAN center to the SAN tail, while the earliest RA activation site first shifted to the inferior lateral SACP for adenosine concentration 50% ([Fig 3A](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011708#pcbi-1011708-g003)) and then to superior lateral SACP at adenosine concentration 84% ([Fig 2A](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011708#pcbi-1011708-g002)).
+
+And here's the referenced Fig 3, showing changes in activation time throughout the SA node as the simulated concentration of adenosine is increased (at 100% adenosine you, unfortunately, get complete SA node arrest):
+
+{% figure "./assets/Sinoatrial Node Conduction Pathways Diagram.png", "Changes in SA node pacemaker shift with simulated adenosine", "" %}
+
+### Sinoatrial conduction pathways
+
+There are then at least 5 sinoatrial conduction pathways (SACPs) that connect the SA node with the right atrium to initiate atrial contractions, and differential patterns in who fires first in the SA node leads to different choices of which SACP fires first also. These are worth also blathering on about briefly, though most of this blathering will be based on [this beautiful paper by Li and Hansen et al. from 2017](https://www.science.org/doi/10.1126/scitranslmed.aam5607). To wit:
+
+There are 5 sinoatrial conduction pathways (SACPs) connecting the sinoatrial node (SAN); 3 of them pop out towards the right atrial appendage/crista terminalis, and 2 of them on the side facing the SVC. Using optical mapping -- where you use dyes that fluoresce in response to the transmembrane voltage difference^{See [here](https://pubmed.ncbi.nlm.nih.gov/32681973/) for more details} -- Li, Hansen, and colleagues were able to demonstrate that administration of adenosine shifted the leading pacemakers from the center of the SAN to the head and tail (and, in contrast, tertiapin^{A 21-AA peptide from honeybee venom that blocks K$^+$ channels -- and in particular, the funny K$^+$ current that triggers depolarization.} made the center more likely to have the leader). Here's the relevant paper figure (SVC = superior vena cava, IAS = inter-atrial septum)!
+
+{% figure "./assets/li-hansen-san-sacp-shift.png", "Shift in SACP usage with adenosine and tertiapin", "" %}
+
+It's important to note that these SACPs are _not_ conduction pathways in the same way as internodal conduction pathways and the His-Purkinje system. They are better thought of as a vehicle to get conduction quickly throughout the atria for appropriate diastolic contraction. 
+### Internodal conduction pathways
+
+So, then, how do we get from the SA node in the right atrium to the left atrium and to the AV node? 
+
+Gentlemen, a short view back to the past^{For a longer view back to the past, one could consider reading [this](https://journals.physiology.org/doi/full/10.1152/advan.00029.2023) review by Cavero and Holzgrefe, which attempts to summarize a 100-year debate in one article; I will now attempt to do so in a few paragraphs}. In 1909 Charles Thorel, an anatomist, reported finding a posterior internodal pathway (in standard tradition, now called Thorel's pathway) comprised of Purkinje-like cells that specialized in transmitting signals from the SA node to the AV node. However, he had the misfortune of reporting this to a room of renowned experts, including the thesis advisor of the guy who discovered the AV node (Sunao Tawara^{The advisor in question was Ludwig Aschoff.}), who had up until this point decided that the impulse was conducted by regular degular atrial myocytes and not any fancy specialized conduction pathway system. 
+
+Sixty years later, just about long enough for a generation or three of anatomists to gently retire unto that good night, one Thomas N. James was able to identify three bands of myocardium connecting the SA and the AV nodes. These were called, with the particular creativity and ingenuity that clinicians often demonstrate, the anterior, middle, and posterior intranodal tracts (labeled as Bachmann's bundle^{Kind of, technically Bachmann's bundle splits off the anterior tract to go and poke the right atrium while the anterior tract winds its way to the AVN}, Wenkebach's bundle^{No, damage to this bundle isn't what causes the eponymous arrhythmia}, and Thorel's bundle). His claim was that these tracts contained distinct conduction pathways along which impulses traveled from the SA node to the AV node. 
+
+There is only one problem with this, which is that, to date, there have been no histologically identifiable tracts of conduction tissue through these bands. So, what gives? 
+
+Well, while it _is_ the case that these bundles do conduct impulses, the atria don't have conduction tissue a la the His-Purkinje system. Instead, the conduction pathway from the SA to AV node occurs through _anisotropic conduction_ along a network of myocyte bundles. Anisotropy here refers to the notion that this tissue is better at conducting impulses (here, electrical impulses) along a particular direction or axis (i.e. directionally dependent), rather than being particularly promiscuous and letting impulses run at equal speed any which way. For example, a 2016 study by [Pashakhanloo et al](https://pubmed.ncbi.nlm.nih.gov/27071829/) used a very fancy custom 3D diffusion tensor MRI imaging sequence to identify a number of cardiac myocyte bundles that permit this anisotropic conduction at relatively^{Compared to general conduction through the myocardium.} high speeds. Importantly, while the existence of these bundles was quite consistent, and e.g. Bachmann's bundle was a consistent finding, it was _not_ the case that there were only 3 major tracts connecting the SA and AV node: 
+
+> We used a semiautomatic algorithm to cluster distinct bundles from the full tractography data (see Methods). The results for specimen 7 are presented in Figure 5, demonstrating 15 distinct major bundles (labeled a–l). Importantly, the presence of these major bundles was consistent across most of the specimens despite variation in cardiovascular clinical status of the subjects.
+
+Wanna know what this all looks like? Well, it looks like this (pulled from Figure 1 of the above paper): 
+{% figure "./assets/pashkanloo_fiber_viz.png", "Tractography of the atrial conduction system", "" %}
+
+Anyways, the upshot of all of this is: conduction from the SA node to the AV node occurs through a number of anisotropic cardiomyocyte bundles^{Incidentally, this may be part of why atrial enlargement/deformation can induce arrhythmias moreso than ventricular deformation; however, I have no evidence for this and mostly have just made up this assertion.}. There's generally a bundle that runs from the SA node out to the left atrium, which we call Bachmann's bundle. Otherwise, it's all Rorschach tests.
+
+## The AV node
+
+The AV node is a little doobob in the postero-inferior part of the interatrial septum, which gets its blood from the RCA via the (appropriately named) atrioventricular nodal branch^{Okay, well, not quite; the conventional AV nodal artery only supplies part of the AV nodal system. For more details, and images if you are able to understand them (which I am not) -- see [Kawashima and Sato 2018](https://pubmed.ncbi.nlm.nih.gov/30001947/). }. 
+
+The AV node gets its inputs from the SA node via the above web of myocyte bundles^{Which, it seems, eventually converge into two main paths: the crista terminalis and the interatrial septum.}, and its job is essentially to act as a signal integrator and gatekeeper mediating conduction from the atrial system to the ventricular His-Purkinje system. 
+
+Structurally, you can think of the AV junction as comprising three parts: 
+1. _Inferior nodal extensions_, traveling from near the coronary sinus ostium to the AV junction
+2. These extensions merge to form the _compact node_
+3. Then, they penetrate the central fibrous body of the heart and turn into the _His bundle_
+
+There are at least two kinds of pathways within this heterogenous structure which can be distinguished by the level of expression of the gap junction protein Cx43 ([Hucker et al. 2009](https://pmc.ncbi.nlm.nih.gov/articles/PMC2756604/)). One is comprised of the leftward nodal extensions and and compact node, and the other is comprised of the rightward nodal extensions, His bundle, and lower nodal bundle. Further studies have identified the gene Tbx3 as a potential marker for identifying the AV node and nodal ring specifically ([Horsthuis et al. 2009](https://pubmed.ncbi.nlm.nih.gov/19498200/)). 
+
+### Fast and slow conduction in the AV node 
+
+The AV node essentially has to translate between the chaotic mess of anisotropic conduction pathways that spiderweb their way across the atria and the relatively linear, straightforward, and sober His-Purkinje system. In doing so, it has to protect the ventricular system from atrial tachyarrhythmias such as atrial fibrillation, ensure that there is a delay of the atrial impulse so that there is enough time for ventricular filling, and also take over pacing when the sinus node fails due to aforementioned chaotic mess of anisotropy. This is a rather complicated task. 
+
+So, how does the AV node manage all of this? Well, as it turns out, this is a rather difficult question to answer, and has often been compared to the riddle of the Sphinx (see [Katritsis 2020](https://www.aerjournal.com/articles/human-atrioventricular-node-oedipus-and-riddle-sphinx))^{Relatedly, many of these articles are obsessed with trotting out Churchill's famous riddle-wrapped-up-in-a-mystery-inside-an-enigma line. }. Back in 1956, studies in canine hearts from [Moe et al](https://pubmed.ncbi.nlm.nih.gov/13330177/) suggested the existence of 2 parallel conduction pathways _within the AV junction_: one fast, and one slow. 
+
+It's worth unpacking this a bit, because it explains a bunch of the junctional arrhythmia type things we see. Moe and friends made a few observations by comparing what happened in dog hearts when they gave the atria two stimuli at varying intervals (what  we will call the A1-A2 interval) and watched the time it took for the _second_ atrial stimulus to reach the His bundle (which we will call the A-H interval). 
+
+As they decreased the A-A interval, at first they saw what you would expect: with a shorter A-A interval (simulating earlier and earlier arrival of the second atrial beat), the A-H interval increased^{The fancy term for this is _decremental conduction_.}: it took longer for the second atrial beat to land in the His bundle. But, as they kept shortening the A-A interval -- as the simulated atria went faster and faster -- at one point the A-H interval stopped increasing smoothly, and instead jumped up. All of a sudden the AV node went from slowing down smoothly, to suddenly slamming on the brakes. This observed discontinuity would be difficult to explain with just a single homogenous conduction pathway, which led to the proposition that the AV junction actually has two pathways: a fast pathway, with rapid conductance and a relatively long refractory period; and a slow pathway, with slow conductance and a relatively short refractory period. At first, everything happens through the fast pathway since it has (more or less) enough time to recover between atrial beats; but, as soon as the atria get too excited, the fast pathway runs out of time to recover and you begin to shift over to the slower pathway, which moves conduction through more slowly and gives the ventricles time to breathe (and recovers quickly enough to keep up with the atria!). 
+
+To be clear, the slow pathway is not a histologically discrete anatomical tract _per se_^{Although it _does_ seem to be the case that the slow pathway roughly corresponds to the inferior nodal extensions of the AV node}, but is moreso a physiologic abstraction^{For more details, please consult your favorite electrophysiology textbook, and if you don't have a favorite electrophysiology textbook, please consult your favorite electrophysiologist, and if you don't have a favorite electrophysiologist, please consult your favorite fortune cookie.}. 
+
+Of course, this also produces a vulnerability; now you can get impulses that travel _down_ one pathway in the AV node (the slow one, often) , then _back up_ another pathway (the fast one, often) in the AV node; hey, look, AV nodal reentry tachycardia! 
+### Ion channels and overdrive suppression 
+
+One might be tempted to ask _how_, from a biochemistry perspective, this nonlinear adaptive filtering jiggery pokery is produced. Well, remember those earlier nonsensical words about connexins and gap junctions? More or less, that is how. The slow pathway/INEs have a lower level of expressed connexins (e.g. Cx43), causing slower conduction due to poor cell-cell conduction, and have different expression patterns of L-type voltage-gated Ca$^{2+}$ channels. In particular, they tend to express higher levels of Cav1.3, which features activation at more hyperpolarized voltages and a faster recovery from inactivation (as compared to the other Ca$^{2+}$ channel du jour, Cav1.2). It's worth noting that the AV node primarily depends on Ca$^{2+}$ signaling and not Na$^+$ signaling^{This being one way by which the AV node enables slower conduction and a rate-dependent refractory period -- can't be firing all that fast without the fast Na$^+$ channels!}. 
+
+One last feature of the AV node that is worth remarking upon is the notion of _overdrive suppression_, which is the twofold phenomenon that when the SA node is functioning appropriately the AV node acts like the usual gatekeeper/passthrough, but that when the SA node is knocked out the AV node has some pacemaker cells that are able to pace the heart themselves! The slower rate of the AV node is, at baseline, caused by a lower density in the HCN channels that mediate the funny current driving depolarization. 
+
+For the first bit, repeated activation of AV nodal cells leads to an accumulation of intracellular Ca$^{2+}$; in classic biochemistry-style negative feedback, high levels of intracellular Ca$^{2+}$ inhibit the very L-type Ca$^{2+}$ channels required for firing. Additionally, since the AV node pacemakers "live" at a slower rate than the SA node pacemakers, rapid firing of the Ca$^{2+}$ channels leads to incomplete recovery, further augmenting this rate-dependent increase in refractoriness. In the absence of the SA node, the slower funny current of the AV node has time to get going, and thus the AV node can start pacing the heart if the SA node goes down^{Albeit, at a rate of 40-60bpm as opposed to the more traditional 60-100bpm.}. 
+
+### Final thoughts 
+
+This is (in a sense) how the AV node can produce _rate-dependent_ filtering effects on atrial impulses, and shield the ventricles from atrial tachycardias while preserving some degree of AV coupling. 
+
+From a control theory perspective, the AV node is solving the problem of taking a (potentially) irregular, high-frequency atrial signal, and applying a _nonlinear transformation_ go get a ventricular rate that is bounded within a range that is physiologically tolerable. If the atria aren't going too fast, let everything through; however, if they start getting too big for their britches, gradually start filtering out some of their beats so the ventricles aren't run into the ground. For more details on this, you can check out [Ma et al. 2025](https://pubmed.ncbi.nlm.nih.gov/40496576/), [Billette and Tadros 2019](https://pubmed.ncbi.nlm.nih.gov/31144331/),  [Billette and Tadros 2014](https://pubmed.ncbi.nlm.nih.gov/24213614/), [Mani and Pavri 2014](https://pubmed.ncbi.nlm.nih.gov/24493912/), or the afore-discussed [Moe et al. 1956](https://pubmed.ncbi.nlm.nih.gov/13330177/). 
+
+After this point, you get the His-Purkinje system, and we have left all of that fun as an exercise to you, dear gentle reader. 
