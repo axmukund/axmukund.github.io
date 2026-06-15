@@ -8,5 +8,10 @@
 		"label": "IM Admissions Checklist",
 		"url": "/assets/admission_checklist/admission_checklist.pdf",
 		"icon": "assets/admission_checklist/checklist_icon.svg"
+	},
+	{
+		"label": "Anesthesia Preop Template",
+		"url": "/assets/anesthesia_preop_template/preop_blank.pdf",
+		"icon": "assets/anesthesia_preop_template/icons8-anesthesia-solid-96.png"
 	}
 ]
