@@ -14,7 +14,7 @@
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "katex": "^0.17.0",
     "markdown-it": "^14.2.0",
-    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-anchor": "^9.2.1",
     "markdown-it-attrs": "^5.0.0",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-texmath": "^1.0.0"
