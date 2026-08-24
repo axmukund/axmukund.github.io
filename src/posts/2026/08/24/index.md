@@ -61,6 +61,7 @@ This here is a useful spot to talk about opioids, which are the mainstays of acu
 
 There are four^{This is a lie, there are more, but there are only 3-4 ones that are particularly relevant to day-to-day clinical practice at this point.} types of opioid receptors: $\mu$ opioid receptors (MORs), $\delta$ opioid receptors (DORs), $\kappa$ opioid receptors (KORs), and nociceptive opioid receptors (NOPRs). There are several major classes of endogenous ligands for these receptors, and there is some level of combinatorial ligand-receptor specificity. The major ligands are endorphins, enkephalins, dynorphins, endomorphins, and nociceptin. MORs tend to bind most everything except for nociceptin, DORs tend to bind endorphins and enkephalins much more than dynorphins or endomorphins, KORs tend to mostly bind dynorphins, and NOPRs pretty much only bind nociceptin. Here's a chart with all this^{Full disclosure, I can never read charts, this is mostly useful as an act of construction, and even then only for me...}: 
 
+
 |              | MOR    | DOR    | KOR  | NOPR |
 | ------------ | ------ | ------ | ---- | ---- |
 | endorphins   | High   | High   | Med  | Low  |
@@ -68,6 +69,7 @@ There are four^{This is a lie, there are more, but there are only 3-4 ones that 
 | enkephalins  | High   | High   | Low  | Low  |
 | endomorphins | High   | Low    | Low  | Low  |
 | nociceptin   | Low    | Low    | Low  | High |
+
 These different receptor classes aren't different "pain tracts" and there isn't some clear functional division between the three. Broadly, there is a tremendous amount of cross-talk between them, and significant ligand-receptor promiscuity that obfuscates any attempt at a simple mental model. On the whole, though, opioid receptors are Gi/o-coupled GPCRs that reduce intracellular cAMP, reducing presynaptic Ca$^{2+}$ leading to increased postsynaptic K$^+$ and neuronal hyperpolarization (read: inhibition of nociceptive neurons). Persistent activation of these opioid receptors can lead to receptor degradation via $\beta$-arrestin pathways, though the mechanisms of this and conditions that specifically lead to degradation are unclear^{At least, to my knowledge, which remains notably minimal.}. All that said, there are some rough shorthands that one can use to distinguish the various receptors: MORs are associated with powerful analgesia, reward, respiratory depression, and GI effects (this is a function of where MORs are expressed rather than some physiologically intentional or meaningful patterning); KORs are associated with analgesia but also dysphoria and aversive stress signaling; and DORs are *waves hand* a modulatory system that does... modulatory things. Broadly, most of the clinical pharmacology relevant to fentanyl/hydromorphone administration are a function of MORs, and much less so the other opioid receptors. 
 
 Of note, MORs are expressed in a number of neuronal pathways, and opioids can thus produce effects on cholinergic and dopaminergic pathways. Opioid-triggered nausea and vomiting are thought to be caused by binding to opioid receptors in the chemotactic trigger zone in the area postrema, and opioid-induced bradycardia is thought to be due to disinhibition of cholinergic projections from the nucleus accumbens to the SA node. Similarly, opioid-mediated sedation is in part caused by anticholinergic activity in, among other regions, the lateral dorsal tegmental nucleus and the reticular formation, and opioid-induced catalepsy and muscular rigidity are thought to be due to inhibition of dopamine release caused by opioid receptor binding in the striatum and substantia nigra. 
@@ -83,7 +85,6 @@ The PAG/RVM act together to modulate the strength of transmitted signals resulti
 ### Gabapentinoids
 
 The two major gabapentinoids that I've come into contact with thus far are gabapentin and pregabalin. Both are derivatives of GABA (hence, *gaba*-pentinoids) which bind $\alpha 2\delta$ subunits of voltage-gated calcium channels (though they have also been found in contact with NMDA and AMPA receptors). By futzing with/inhibiting Ca$^{2+}$ influx, they inhibit neuronal signaling -- kind of like G$_{\mathrm{i}}$-coupled GPCRs. For more details, please consult literally anybody else. 
-
 
 
 
